@@ -85,15 +85,9 @@ public class Resource {
             }
 
             if (!allowed.isEmpty()) {
-                String query = "";
-                for (int j = 0; i < allowed.size(); i++) {
-                    if (j == 0) {
-                        query += "?" + allowed;
-                    } else {
-                        query += "&" + allowed;
-                    }
+                for (int j = 0, len = allowed.size(); i < len; i++) {
+                    route += (j == 0 ? "?" : "&") + allowed;
                 }
-                route += query;
             }
         } else {
             Type resourceMapType = new TypeToken< Map<String, String>>() {
