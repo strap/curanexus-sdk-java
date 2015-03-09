@@ -3,44 +3,48 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.strap.sdk.java;
+package com.strap.sdk.java;
 
-
-
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  *
  * @author marcellebonterre
  */
-public class StrapReport {
+public class StrapUsers {
 
     protected final ResourceManager serviceManager;
 
-    public StrapReport(String token) {
+    public StrapUsers(String token) {
         this.serviceManager = new ResourceManager(token);
     }
 
-    public StrapReport(ResourceManager manager) {
+    public StrapUsers(ResourceManager manager) {
         this.serviceManager = manager;
     }
 
+    public String get() throws Exception {
+        Map<String, String> params = new HashMap<>();
+        return this.serviceManager.call("users", "GET", params);
+    }
+
     public String get(Map<String, String> params) throws Exception {
-        return this.serviceManager.call("report", "GET", params);
+        return this.serviceManager.call("users", "GET", params);
     }
 
     public String put(Map<String, String> params) throws Exception {
-        return this.serviceManager.call("report", "PUT", params);
+        return this.serviceManager.call("users", "PUT", params);
 
     }
 
     public String post(Map<String, String> params) throws Exception {
-        return this.serviceManager.call("report", "POST", params);
+        return this.serviceManager.call("users", "POST", params);
 
     }
 
     public String delete(Map<String, String> params) throws Exception {
-        return this.serviceManager.call("report", "DELETE", params);
+        return this.serviceManager.call("users", "DELETE", params);
 
     }
 }
