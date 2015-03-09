@@ -86,7 +86,7 @@ public class Resource {
 
             if (!allowed.isEmpty()) {
                 for (int j = 0, len = allowed.size(); i < len; i++) {
-                    route += (j == 0 ? "?" : "&") + allowed[j];
+                    route += (j == 0 ? "?" : "&") + allowed.get(j);
                 }
             }
         } else {
