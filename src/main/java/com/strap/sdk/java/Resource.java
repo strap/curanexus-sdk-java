@@ -56,27 +56,23 @@ public class Resource {
         route = paramsToQueryString(route, params);
         reqParams.put("route", route.body);
 
-        if (!"GET".equals(this.method)) {
-            // create request body for non-GET requests
-            String body = mapToJSON(params);
-            reqParams.put("body", body);
-        }
-        System.out.println(reqParams);
-        switch (method) {
-            case "GET":
-                rv.body = httpGet(reqParams);
-                break;
-            case "PUT":
-                rv.body = httpPut(params);
-                break;
-            case "POST":
-                rv.body = httpPost(params);
-                break;
-            case "DELETE":
-                rv.body = httpDelete(reqParams);
-                break;
+        if ("GET".equals(method)) {
+            String res = httpGet(reqParams);
+            Map<String, String> resMap = mapFromJSON(res);
+            if (resMap.containsKey("success")
+                    && "false".equals(resMap.get("success"))) {
+                rv.body = "";
+                rv.error = res;
+            }
         }
         return rv;
+    }
+
+    private Map<String, String> mapFromJSON(String body) {
+        Type resourceMapType = new TypeToken< Map<String, String>>() {
+        }.getType();
+        Map<String, String> res = JSON.fromJson(body, resourceMapType);
+        return res;
     }
 
     private String mapToJSON(Map<String, String> params) {
@@ -89,22 +85,20 @@ public class Resource {
     private StrapResponse paramsToQueryString(StrapResponse url, Map<String, String> params) {
         StrapResponse route = url;
 
-        if ("GET".equals(this.method)) {
-            // get list of allowed, optional parameters
-            List<String> allowed = new ArrayList<>();
-            for (String param : this.optional) {
-                if (params.get(param) != null) {
-                    allowed.add(param + "=" + encodeString(params.get(param)));
-                }
+        // get list of allowed, optional parameters
+        List<String> allowed = new ArrayList<>();
+        for (String param : this.optional) {
+            if (params.get(param) != null) {
+                allowed.add(param + "=" + encodeString(params.get(param)));
+            }
+        }
+
+        // convert allowed, optional parameters to querystring
+        if (!allowed.isEmpty()) {
+            for (int j = 0, len = allowed.size(); j < len; j++) {
+                route.body += (j == 0 ? "?" : "&") + allowed.get(j);
             }
 
-            // convert allowed, optional parameters to querystring
-            if (!allowed.isEmpty()) {
-                for (int j = 0, len = allowed.size(); j < len; j++) {
-                    route.body += (j == 0 ? "?" : "&") + allowed.get(j);
-                }
-
-            }
         }
         // return route with querystring
         return route;
@@ -130,13 +124,8 @@ public class Resource {
                 params.remove(UrlParam);
                 i++;
             } else {
-                if (!"GET".equals(this.method)) {
-                    rv.error = "Missing parameter: " + UrlParam;
-                    return rv;
-                } else {
-//                    GET calls may omit url params
-                    m.appendReplacement(strBuf, "");
-                }
+                // GET calls may omit url params
+                m.appendReplacement(strBuf, "");
             }
         }
         m.appendTail(strBuf);
@@ -167,29 +156,6 @@ public class Resource {
     private String httpGet(Map<String, String> params) {
         return HttpRequest
                 .get(params.get("route"))
-                .header("X-Auth-Token", this.token)
-                .body();
-    }
-
-    private String httpPut(Map<String, String> params) {
-        return HttpRequest
-                .put(this.uri)
-                .header("X-Auth-Token", this.token)
-                .form(params)
-                .body();
-    }
-
-    private String httpPost(Map<String, String> params) {
-        return HttpRequest
-                .post(this.uri)
-                .header("X-Auth-Token", this.token)
-                .form(params)
-                .body();
-    }
-
-    private String httpDelete(Map<String, String> params) {
-        return HttpRequest
-                .delete(params.get("route"))
                 .header("X-Auth-Token", this.token)
                 .body();
     }

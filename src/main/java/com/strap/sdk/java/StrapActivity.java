@@ -22,18 +22,4 @@ public class StrapActivity {
         return this.serviceManager.call("activity", "GET", params);
     }
 
-    public StrapResponse put(Map<String, String> params) {
-        return this.serviceManager.call("activity", "PUT", params);
-
-    }
-
-    public StrapResponse post(Map<String, String> params) {
-        return this.serviceManager.call("activity", "POST", params);
-
-    }
-
-    public StrapResponse delete(Map<String, String> params) {
-        return this.serviceManager.call("activity", "DELETE", params);
-
-    }
 }

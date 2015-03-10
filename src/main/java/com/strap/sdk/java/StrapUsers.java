@@ -28,18 +28,4 @@ public class StrapUsers {
         return this.serviceManager.call("users", "GET", params);
     }
 
-    public StrapResponse put(Map<String, String> params) {
-        return this.serviceManager.call("users", "PUT", params);
-
-    }
-
-    public StrapResponse post(Map<String, String> params) {
-        return this.serviceManager.call("users", "POST", params);
-
-    }
-
-    public StrapResponse delete(Map<String, String> params) {
-        return this.serviceManager.call("users", "DELETE", params);
-
-    }
 }

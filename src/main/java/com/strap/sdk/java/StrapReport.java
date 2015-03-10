@@ -26,19 +26,4 @@ public class StrapReport {
     public StrapResponse get(Map<String, String> params) {
         return this.serviceManager.call("report", "GET", params);
     }
-
-    public StrapResponse put(Map<String, String> params) {
-        return this.serviceManager.call("report", "PUT", params);
-
-    }
-
-    public StrapResponse post(Map<String, String> params) {
-        return this.serviceManager.call("report", "POST", params);
-
-    }
-
-    public StrapResponse delete(Map<String, String> params) {
-        return this.serviceManager.call("report", "DELETE", params);
-
-    }
 }

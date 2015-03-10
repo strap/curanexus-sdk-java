@@ -28,18 +28,4 @@ public class StrapToday {
         return this.serviceManager.call("today", "GET", params);
     }
 
-    public StrapResponse put(Map<String, String> params) {
-        return this.serviceManager.call("today", "PUT", params);
-
-    }
-
-    public StrapResponse post(Map<String, String> params) {
-        return this.serviceManager.call("today", "POST", params);
-
-    }
-
-    public StrapResponse delete(Map<String, String> params) {
-        return this.serviceManager.call("today", "DELETE", params);
-
-    }
 }
