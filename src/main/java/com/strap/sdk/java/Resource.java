@@ -53,9 +53,9 @@ public class Resource {
             return rv;
         }
 
-        route = paramsToQueryString(route,params);
+        route = paramsToQueryString(route, params);
         reqParams.put("route", route.body);
-        
+
         if (!"GET".equals(this.method)) {
             // create request body for non-GET requests
             String body = mapToJSON(params);
@@ -67,10 +67,10 @@ public class Resource {
                 rv.body = httpGet(reqParams);
                 break;
             case "PUT":
-                rv.body = httpPut(reqParams);
+                rv.body = httpPut(params);
                 break;
             case "POST":
-                rv.body = httpPost(reqParams);
+                rv.body = httpPost(params);
                 break;
             case "DELETE":
                 rv.body = httpDelete(reqParams);
@@ -78,14 +78,14 @@ public class Resource {
         }
         return rv;
     }
-    
+
     private String mapToJSON(Map<String, String> params) {
         Type resourceMapType = new TypeToken< Map<String, String>>() {
         }.getType();
         String body = JSON.toJson(params, resourceMapType);
         return body;
     }
-    
+
     private StrapResponse paramsToQueryString(StrapResponse url, Map<String, String> params) {
         StrapResponse route = url;
 
@@ -97,7 +97,7 @@ public class Resource {
                     allowed.add(param + "=" + encodeString(params.get(param)));
                 }
             }
-            
+
             // convert allowed, optional parameters to querystring
             if (!allowed.isEmpty()) {
                 for (int j = 0, len = allowed.size(); j < len; j++) {
@@ -175,7 +175,7 @@ public class Resource {
         return HttpRequest
                 .put(this.uri)
                 .header("X-Auth-Token", this.token)
-                .send(params.get("body"))
+                .form(params)
                 .body();
     }
 
@@ -183,7 +183,7 @@ public class Resource {
         return HttpRequest
                 .post(this.uri)
                 .header("X-Auth-Token", this.token)
-                .send(params.get("body"))
+                .form(params)
                 .body();
     }
 
