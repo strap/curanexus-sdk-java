@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.strap.sdk.java;
 
 import java.util.HashMap;
@@ -24,26 +19,26 @@ public class StrapUsers {
         this.serviceManager = manager;
     }
 
-    public String get() throws Exception {
+    public StrapResponse get() {
         Map<String, String> params = new HashMap<>();
         return this.serviceManager.call("users", "GET", params);
     }
 
-    public String get(Map<String, String> params) throws Exception {
+    public StrapResponse get(Map<String, String> params) {
         return this.serviceManager.call("users", "GET", params);
     }
 
-    public String put(Map<String, String> params) throws Exception {
+    public StrapResponse put(Map<String, String> params) {
         return this.serviceManager.call("users", "PUT", params);
 
     }
 
-    public String post(Map<String, String> params) throws Exception {
+    public StrapResponse post(Map<String, String> params) {
         return this.serviceManager.call("users", "POST", params);
 
     }
 
-    public String delete(Map<String, String> params) throws Exception {
+    public StrapResponse delete(Map<String, String> params) {
         return this.serviceManager.call("users", "DELETE", params);
 
     }

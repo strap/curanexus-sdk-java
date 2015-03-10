@@ -1,11 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.strap.sdk.java;
-
-
 
 // Google lib for working with JSON [de]serialization
 import com.google.gson.Gson;
@@ -32,9 +25,6 @@ public final class ResourceManager {
 
     public void discover() {
 //        TODO: exception handling for http response
-
-//        create/perform request to discoveryURL &&
-//        set x-auth-token header to ResourceManager.token
         String services = HttpRequest
                 .get(discoveryURL)
                 .header("X-Auth-Token", ResourceManager.token)
@@ -46,11 +36,11 @@ public final class ResourceManager {
         ResourceManager.resources = JSON.fromJson(services, resourceMapType);
     }
 
-    public String call(String serviceName, String method, Map<String, String> params) throws Exception {
+    public StrapResponse call(String serviceName, String method, Map<String, String> params) {
         if (ResourceManager.resources.get(serviceName) == null) {
-            throw new Exception("Could not find resource.");
+            return new StrapResponse(null, "Could not find resource.");
         }
-        
+
         ResourceManager.resources.get(serviceName).setToken(ResourceManager.token);
         ResourceManager.resources.get(serviceName).setMethod(method);
 
