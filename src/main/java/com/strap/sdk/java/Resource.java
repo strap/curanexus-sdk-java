@@ -44,32 +44,25 @@ public class Resource {
      */
     public StrapResponse call(String method, Map<String, String> params) {
         StrapResponse rv = new StrapResponse();
-
         Map<String, String> reqParams = new HashMap<>();
-        String route = replaceUrlParams(this.uri, params);
 
-        if ("GET".equals(this.method)) {
+        // move url params from params object to url string
+        StrapResponse route = replaceUrlParams(this.uri, params);
+        if (!"".equals(route.error)) {
+            rv = route;
+            return rv;
+        }
 
-            List<String> allowed = new ArrayList<>();
-            for (String param : this.optional) {
-                if (params.get(param) != null) {
-                    allowed.add(param + "=" + encodeString(params.get(param)));
-                }
-            }
-
-            if (!allowed.isEmpty()) {
-
-                for (int j = 0, len = allowed.size(); j < len; j++) {
-                    route += (j == 0 ? "?" : "&") + allowed.get(j);
-                }
-            }
-        } else {
+        route = paramsToQueryString(route,params);
+        reqParams.put("route", route.body);
+        
+        if (!"GET".equals(this.method)) {
+            // create request body for non-GET requests
             Type resourceMapType = new TypeToken< Map<String, String>>() {
             }.getType();
             String body = JSON.toJson(params, resourceMapType);
             reqParams.put("body", body);
         }
-        reqParams.put("route", route);
 
         switch (method) {
             case "GET":
@@ -88,7 +81,34 @@ public class Resource {
         return rv;
     }
 
-    private String replaceUrlParams(String route, Map<String, String> params) {
+    private StrapResponse paramsToQueryString(StrapResponse url, Map<String, String> params) {
+        StrapResponse route = url;
+
+        if ("GET".equals(this.method)) {
+            // get list of allowed, optional parameters
+            List<String> allowed = new ArrayList<>();
+            for (String param : this.optional) {
+                if (params.get(param) != null) {
+                    allowed.add(param + "=" + encodeString(params.get(param)));
+                }
+            }
+            
+            // convert allowed, optional parameters to querystring
+            if (!allowed.isEmpty()) {
+                for (int j = 0, len = allowed.size(); j < len; j++) {
+                    route.body += (j == 0 ? "?" : "&") + allowed.get(j);
+                }
+
+            }
+        }
+        // return route with querystring
+        return route;
+
+    }
+
+    private StrapResponse replaceUrlParams(String route, Map<String, String> params) {
+        StrapResponse rv = new StrapResponse();
+
         String regex = "\\{(\\S+?)\\}";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(route);
@@ -106,7 +126,8 @@ public class Resource {
                 i++;
             } else {
                 if (!"GET".equals(this.method)) {
-                    return "Missing parameter: " + UrlParam;
+                    rv.error = "Missing parameter: " + UrlParam;
+                    return rv;
                 } else {
 //                    GET calls may omit url params
                     m.appendReplacement(strBuf, "");
@@ -115,7 +136,8 @@ public class Resource {
         }
         m.appendTail(strBuf);
         route = strBuf.toString();
-        return route;
+        rv.body = route;
+        return rv;
     }
 
     private static String encodeString(String name) throws NullPointerException {
