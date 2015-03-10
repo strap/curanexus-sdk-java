@@ -63,6 +63,9 @@ public class Resource {
                     && "false".equals(resMap.get("success"))) {
                 rv.body = "";
                 rv.error = res;
+            }else{
+                rv.body = res;
+                rv.error = "";
             }
         }
         return rv;
