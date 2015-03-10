@@ -5,8 +5,6 @@
  */
 package com.strap.sdk.java;
 
-
-
 import java.util.Map;
 
 /**
@@ -25,21 +23,21 @@ public class StrapReport {
         this.serviceManager = manager;
     }
 
-    public String get(Map<String, String> params) throws Exception {
+    public StrapResponse get(Map<String, String> params) {
         return this.serviceManager.call("report", "GET", params);
     }
 
-    public String put(Map<String, String> params) throws Exception {
+    public StrapResponse put(Map<String, String> params) {
         return this.serviceManager.call("report", "PUT", params);
 
     }
 
-    public String post(Map<String, String> params) throws Exception {
+    public StrapResponse post(Map<String, String> params) {
         return this.serviceManager.call("report", "POST", params);
 
     }
 
-    public String delete(Map<String, String> params) throws Exception {
+    public StrapResponse delete(Map<String, String> params) {
         return this.serviceManager.call("report", "DELETE", params);
 
     }

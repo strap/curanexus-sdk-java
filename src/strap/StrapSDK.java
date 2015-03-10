@@ -1,4 +1,4 @@
-package com.strap.sdk.java;
+package strap;
 
 // Google lib for working with JSON [de]serialization
 import com.google.gson.Gson;
@@ -11,39 +11,30 @@ import java.util.Map;
  *
  * @author marcellebonterre
  */
-public final class ResourceManager {
+public final class StrapSDK {
 
     private static final Gson JSON = new Gson();
     private static final String discoveryURL = "https://api2.straphq.com/discover";
     private static String token;
     private static Map<String, Resource> resources = new HashMap<>();
 
-    public ResourceManager(String token) {
-        ResourceManager.token = token;
+    public StrapSDK(String token) {
+        StrapSDK.token = token;
         this.discover();
     }
 
     public void discover() {
 //        TODO: exception handling for http response
+//        create/perform request to discoveryURL &&
+//        set x-auth-token header to this.token
         String services = HttpRequest
                 .get(discoveryURL)
-                .header("X-Auth-Token", ResourceManager.token)
+                .header("X-Auth-Token", StrapSDK.token)
                 .body();
 
 //        save response to resources map using JSON
         Type resourceMapType = new TypeToken< Map<String, Resource>>() {
         }.getType();
-        ResourceManager.resources = JSON.fromJson(services, resourceMapType);
-    }
-
-    public StrapResponse call(String serviceName, String method, Map<String, String> params) {
-        if (ResourceManager.resources.get(serviceName) == null) {
-            return new StrapResponse(null, "Could not find resource.");
-        }
-
-        ResourceManager.resources.get(serviceName).setToken(ResourceManager.token);
-        ResourceManager.resources.get(serviceName).setMethod(method);
-
-        return ResourceManager.resources.get(serviceName).call(method, params);
+        resources = JSON.fromJson(services, resourceMapType);
     }
 }

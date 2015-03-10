@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.strap.sdk.java;
-
 
 /**
  *
@@ -13,7 +7,7 @@ package com.strap.sdk.java;
 public class StrapSDK {
 
     private final ResourceManager serviceManager;
-    
+
     public final StrapActivity activity;
     public final StrapReport report;
     public final StrapToday today;
@@ -21,7 +15,7 @@ public class StrapSDK {
 
     public StrapSDK(String token) {
         this.serviceManager = new ResourceManager(token);
-        
+
         this.activity = new StrapActivity(this.serviceManager);
         this.report = new StrapReport(this.serviceManager);
         this.today = new StrapToday(this.serviceManager);
