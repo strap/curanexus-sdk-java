@@ -58,12 +58,10 @@ public class Resource {
         
         if (!"GET".equals(this.method)) {
             // create request body for non-GET requests
-            Type resourceMapType = new TypeToken< Map<String, String>>() {
-            }.getType();
-            String body = JSON.toJson(params, resourceMapType);
+            String body = mapToJSON(params);
             reqParams.put("body", body);
         }
-
+        System.out.println(reqParams);
         switch (method) {
             case "GET":
                 rv.body = httpGet(reqParams);
@@ -80,7 +78,14 @@ public class Resource {
         }
         return rv;
     }
-
+    
+    private String mapToJSON(Map<String, String> params) {
+        Type resourceMapType = new TypeToken< Map<String, String>>() {
+        }.getType();
+        String body = JSON.toJson(params, resourceMapType);
+        return body;
+    }
+    
     private StrapResponse paramsToQueryString(StrapResponse url, Map<String, String> params) {
         StrapResponse route = url;
 
