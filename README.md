@@ -1,5 +1,3 @@
-# strap-sdk-java
-strap-sdk-java
 # strapSDK
 
 Strap SDK Java provides an easy to use, chainable API for interacting with our API services. Its purpose is to abstract away resource information from our primary API, i.e. not having to manually track API information for your custom API endpoint.
