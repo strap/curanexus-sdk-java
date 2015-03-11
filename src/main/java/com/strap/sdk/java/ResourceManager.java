@@ -20,12 +20,11 @@ public final class ResourceManager {
 
     public ResourceManager(String token) {
         ResourceManager.token = token;
-        this.discover();
+        ResourceManager.resources = discover();
     }
 
-    public void discover() {
-//        TODO: exception handling for http response
-        String services = HttpRequest
+    private Map<String, Resource> discover() {
+        String res = HttpRequest
                 .get(discoveryURL)
                 .header("X-Auth-Token", ResourceManager.token)
                 .body();
@@ -33,7 +32,7 @@ public final class ResourceManager {
 //        save response to resources map using JSON
         Type resourceMapType = new TypeToken< Map<String, Resource>>() {
         }.getType();
-        ResourceManager.resources = JSON.fromJson(services, resourceMapType);
+        return JSON.fromJson(res, resourceMapType);
     }
 
     public StrapResponse call(String serviceName, String method, Map<String, String> params) {
@@ -45,5 +44,12 @@ public final class ResourceManager {
         ResourceManager.resources.get(serviceName).setMethod(method);
 
         return ResourceManager.resources.get(serviceName).call(method, params);
+    }
+
+    private Map<String, String> mapFromJSON(String body) {
+        Type resourceMapType = new TypeToken< Map<String, String>>() {
+        }.getType();
+        Map<String, String> res = JSON.fromJson(body, resourceMapType);
+        return res;
     }
 }

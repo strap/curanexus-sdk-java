@@ -7,12 +7,13 @@ package com.strap.sdk.java;
 public class StrapSDK {
 
     private final ResourceManager serviceManager;
-
+   
     public final StrapActivity activity;
     public final StrapReport report;
     public final StrapToday today;
     public final StrapUsers users;
-
+    
+    
     public StrapSDK(String token) {
         this.serviceManager = new ResourceManager(token);
 
