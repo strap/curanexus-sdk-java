@@ -6,16 +6,16 @@ package com.strap.sdk.java;
  */
 public class StrapResponse {
 
-    public String body;
+    public StrapModel data;
     public String error;
 
     public StrapResponse() {
-        this.body = "";
+        this.data = null;
         this.error = "";
     }
 
-    public StrapResponse(String body, String error) {
-        this.body = body;
+    public StrapResponse(StrapModel data, String error) {
+        this.data = data;
         this.error = error;
     }
 }
