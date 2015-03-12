@@ -14,7 +14,7 @@ import java.util.Map;
 public class StrapReportModel {
 
     public String id;
-    public int timestamp;
+    public long timestamp;
     public String date;
     public String type;
     public String range;
