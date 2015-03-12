@@ -42,47 +42,46 @@ public class Resource {
      * @param params
      * @return
      */
-    public StrapResponse call(String method, Map<String, String> params) {
-        StrapResponse rv = new StrapResponse();
+    public StrapResponse<String> call(String method, Map<String, String> params) {
+        StrapResponse<String> rv = new StrapResponse<>();
         Map<String, String> reqParams = new HashMap<>();
 
         // move url params from params object to url string
-        StrapResponse route = replaceUrlParams(this.uri, params);
-        if (!"".equals(route.error)) {
-            rv = route;
-            return rv;
-        }
+        String route = replaceUrlParams(this.uri, params);
 
         route = paramsToQueryString(route, params);
-        reqParams.put("route", route.body);
+        reqParams.put("route", route);
 
-        if ("GET".equals(method)) {
-            String res = httpGet(reqParams);
-            Map<String, String> resMap = mapFromJSON(res);
-            if ((resMap == null 
-                    || !resMap.containsKey("success"))
-                    || !"false".equals(resMap.get("success"))) {
-                rv.body = "";
-                rv.error = res;
-            }else{
-                rv.body = res;
-                rv.error = "";
-            }
+        String res = httpGet(reqParams);
+        return validateResponse(res, rv);
+
+    }
+
+    private StrapResponse<String> validateResponse(String res, StrapResponse<String> rv) {
+        Map<String, String> resMap = mapFromJSON(res);
+        if ((resMap == null
+                || !resMap.containsKey("success"))
+                || !"false".equals(resMap.get("success"))) {
+            rv.data = res;
+            rv.error = "";
+        } else {
+            rv.data = null;
+            rv.error = res;
         }
         return rv;
     }
 
     private Map<String, String> mapFromJSON(String body) {
         Map<String, String> res;
-        
+
         Type resourceMapType = new TypeToken< Map<String, String>>() {
         }.getType();
-        try{
+        try {
             res = JSON.fromJson(body, resourceMapType);
-        }catch(Exception e){
+        } catch (Exception e) {
             res = null;
         }
-        
+
         return res;
     }
 
@@ -93,8 +92,8 @@ public class Resource {
         return body;
     }
 
-    private StrapResponse paramsToQueryString(StrapResponse url, Map<String, String> params) {
-        StrapResponse route = url;
+    private String paramsToQueryString(String url, Map<String, String> params) {
+        String route = url;
 
         // get list of allowed, optional parameters
         List<String> allowed = new ArrayList<>();
@@ -107,7 +106,7 @@ public class Resource {
         // convert allowed, optional parameters to querystring
         if (!allowed.isEmpty()) {
             for (int j = 0, len = allowed.size(); j < len; j++) {
-                route.body += (j == 0 ? "?" : "&") + allowed.get(j);
+                route += (j == 0 ? "?" : "&") + allowed.get(j);
             }
 
         }
@@ -116,8 +115,8 @@ public class Resource {
 
     }
 
-    private StrapResponse replaceUrlParams(String route, Map<String, String> params) {
-        StrapResponse rv = new StrapResponse();
+    private String replaceUrlParams(String route, Map<String, String> params) {
+        String rv = "";
 
         String regex = "\\{(\\S+?)\\}";
         Pattern p = Pattern.compile(regex);
@@ -141,7 +140,7 @@ public class Resource {
         }
         m.appendTail(strBuf);
         route = strBuf.toString();
-        rv.body = route;
+        rv = route;
         return rv;
     }
 
