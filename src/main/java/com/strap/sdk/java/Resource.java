@@ -59,8 +59,9 @@ public class Resource {
         if ("GET".equals(method)) {
             String res = httpGet(reqParams);
             Map<String, String> resMap = mapFromJSON(res);
-            if (resMap.containsKey("success")
-                    && "false".equals(resMap.get("success"))) {
+            if (resMap != null &&
+                    resMap.containsKey("success") &&
+                    "false".equals(resMap.get("success"))) {
                 rv.body = "";
                 rv.error = res;
             }else{
@@ -72,9 +73,16 @@ public class Resource {
     }
 
     private Map<String, String> mapFromJSON(String body) {
+        Map<String, String> res;
+        
         Type resourceMapType = new TypeToken< Map<String, String>>() {
         }.getType();
-        Map<String, String> res = JSON.fromJson(body, resourceMapType);
+        try{
+            res = JSON.fromJson(body, resourceMapType);
+        }catch(Exception e){
+            res = null;
+        }
+        
         return res;
     }
 
