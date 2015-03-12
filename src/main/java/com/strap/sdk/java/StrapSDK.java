@@ -105,12 +105,13 @@ public class StrapSDK {
             Map<String, String> u = JSON.fromJson(arr.get(i), userType);
             us.add(u);
         }
-        StrapUserList rv = new StrapUserList(us,res.error);
+        StrapUserList rv = new StrapUserList(us, res.error);
         return rv;
     }
 
-    public StrapResponse getTrigger(Map<String, String> params) {
-        return call("trigger", "GET", params);
+    public StrapTrigger getTrigger(Map<String, String> params) {
+        StrapResponse<String> res = call("trigger", "GET", params);
+        return new StrapTrigger(res.data);
     }
 
     private ArrayList<StrapReportModel> jsonToReportList(String jsonStr) {
