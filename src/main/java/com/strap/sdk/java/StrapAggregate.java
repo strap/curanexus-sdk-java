@@ -15,4 +15,6 @@ public class StrapAggregate {
     public int steps;
     public int activeMinutes;
     public int nonactiveMinutes;
+    public String updated;
+
 }
