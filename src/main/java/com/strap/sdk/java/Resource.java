@@ -59,9 +59,9 @@ public class Resource {
         if ("GET".equals(method)) {
             String res = httpGet(reqParams);
             Map<String, String> resMap = mapFromJSON(res);
-            if (resMap != null &&
-                    resMap.containsKey("success") &&
-                    "false".equals(resMap.get("success"))) {
+            if ((resMap == null 
+                    || !resMap.containsKey("success"))
+                    || !"false".equals(resMap.get("success"))) {
                 rv.body = "";
                 rv.error = res;
             }else{
