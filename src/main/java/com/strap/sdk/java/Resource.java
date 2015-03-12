@@ -48,29 +48,40 @@ public class Resource {
 
         // move url params from params object to url string
         String route = replaceUrlParams(this.uri, params);
-        
+
         route = paramsToQueryString(route, params);
         reqParams.put("route", route);
 
-        if ("GET".equals(method)) {
-            String res = httpGet(reqParams);
-            Map<String, String> resMap = mapFromJSON(res);
-            if (resMap.containsKey("success")
-                    && "false".equals(resMap.get("success"))) {
-                rv.data = null;
-                rv.error = res;
-            }else{
-                rv.data = res;
-                rv.error = "";
-            }
+        String res = httpGet(reqParams);
+        return validateResponse(res, rv);
+
+    }
+
+    private StrapResponse<String> validateResponse(String res, StrapResponse<String> rv) {
+        Map<String, String> resMap = mapFromJSON(res);
+        if ((resMap == null
+                || !resMap.containsKey("success"))
+                || !"false".equals(resMap.get("success"))) {
+            rv.data = res;
+            rv.error = "";
+        } else {
+            rv.data = null;
+            rv.error = res;
         }
         return rv;
     }
 
     private Map<String, String> mapFromJSON(String body) {
+        Map<String, String> res;
+
         Type resourceMapType = new TypeToken< Map<String, String>>() {
         }.getType();
-        Map<String, String> res = JSON.fromJson(body, resourceMapType);
+        try {
+            res = JSON.fromJson(body, resourceMapType);
+        } catch (Exception e) {
+            res = null;
+        }
+
         return res;
     }
 
