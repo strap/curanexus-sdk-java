@@ -57,55 +57,55 @@ public class StrapSDK {
         return StrapSDK.resources.get(serviceName).call(method, params);
     }
 
-    public StrapResponse<ArrayList<StrapReport>> getActivity(Map<String, String> params) {
+    public StrapReportList getActivity(Map<String, String> params) {
         StrapResponse<String> res = call("activity", "GET", params);
-        ArrayList<StrapReport> rs = jsonToReportsList(res.data);
-        StrapResponse<ArrayList<StrapReport>> rv = new StrapResponse<>(rs, res.error);
+        ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
+        StrapReportList rv = new StrapReportList(rs, res.error);
         return rv;
     }
 
-    public StrapResponse<ArrayList<StrapReport>> getToday() {
+    public StrapReportList getToday() {
         Map<String, String> params = new HashMap<>();
         return this.getToday(params);
     }
 
-    public StrapResponse<ArrayList<StrapReport>> getToday(Map<String, String> params) {
+    public StrapReportList getToday(Map<String, String> params) {
         StrapResponse<String> res = call("today", "GET", params);
-        ArrayList<StrapReport> rs = jsonToReportsList(res.data);
-        StrapResponse<ArrayList<StrapReport>> rv = new StrapResponse<>(rs, res.error);
+        ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
+        StrapReportList rv = new StrapReportList(rs, res.error);
         return rv;
     }
 
-    public StrapResponse<StrapReport> getReport(Map<String, String> params) {
+    public StrapReport getReport(Map<String, String> params) {
         StrapResponse<String> res = call("report", "GET", params);
-        Type reportType = new TypeToken<StrapReport>() {}.getType();
-        StrapReport r = JSON.fromJson(res.data, reportType);
-        StrapResponse<StrapReport> rv = new StrapResponse<>(r, res.error);
+        Type reportType = new TypeToken<StrapReportModel>() {
+        }.getType();
+        StrapReportModel r = JSON.fromJson(res.data, reportType);
+        StrapReport rv = new StrapReport(r, res.error);
         return rv;
 
     }
 
-    public StrapResponse<ArrayList<Map<String,String>>> getUsers() {
+    public StrapUserList getUsers() {
         Map<String, String> params = new HashMap<>();
-       return this.getUsers(params);
+        return this.getUsers(params);
     }
 
-    public StrapResponse<ArrayList<Map<String,String>>> getUsers(Map<String, String> params) {
-         StrapResponse<String> res = call("users", "GET", params);
-         
+    public StrapUserList getUsers(Map<String, String> params) {
+        StrapResponse<String> res = call("users", "GET", params);
+
         JsonParser parser = new JsonParser();
 
         JsonArray arr = parser.parse(res.data).getAsJsonArray();
 
-        StrapResponse<ArrayList<Map<String,String>>> rv = new StrapResponse<>();
-        ArrayList<Map<String,String>> us = new ArrayList<>();
+        ArrayList<Map<String, String>> us = new ArrayList<>();
         for (int i = 0, numObjs = arr.size(); i < numObjs; i++) {
-            Type userType = new TypeToken<Map<String,String>>() {
+            Type userType = new TypeToken<Map<String, String>>() {
             }.getType();
-            Map<String,String> u = JSON.fromJson(arr.get(i), userType);
+            Map<String, String> u = JSON.fromJson(arr.get(i), userType);
             us.add(u);
         }
-        rv.data = us;
+        StrapUserList rv = new StrapUserList(us,res.error);
         return rv;
     }
 
@@ -113,16 +113,16 @@ public class StrapSDK {
         return call("trigger", "GET", params);
     }
 
-    private ArrayList<StrapReport> jsonToReportsList(String jsonStr) {
+    private ArrayList<StrapReportModel> jsonToReportList(String jsonStr) {
         JsonParser parser = new JsonParser();
 
         JsonArray arr = parser.parse(jsonStr).getAsJsonArray();
 
-        ArrayList<StrapReport> rv = new ArrayList<>();
+        ArrayList<StrapReportModel> rv = new ArrayList<>();
         for (int i = 0, numObjs = arr.size(); i < numObjs; i++) {
-            Type reportType = new TypeToken<StrapReport>() {
+            Type reportType = new TypeToken<StrapReportModel>() {
             }.getType();
-            StrapReport r = JSON.fromJson(arr.get(i), reportType);
+            StrapReportModel r = JSON.fromJson(arr.get(i), reportType);
             rv.add(r);
         }
         return rv;
