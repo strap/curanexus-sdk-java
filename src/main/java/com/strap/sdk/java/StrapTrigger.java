@@ -9,7 +9,7 @@ package com.strap.sdk.java;
  *
  * @author marcellebonterre
  */
-public class StrapTriggerList {
+public class StrapTrigger {
     public String data;
     public String error;
 }
