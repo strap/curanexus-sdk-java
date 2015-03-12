@@ -3,10 +3,11 @@ package com.strap.sdk.java;
 /**
  *
  * @author marcellebonterre
+ * @param <T>
  */
-public class StrapResponse {
+public class StrapResponse<T> {
 
-    public StrapModel data;
+    public T data;
     public String error;
 
     public StrapResponse() {
@@ -14,7 +15,7 @@ public class StrapResponse {
         this.error = "";
     }
 
-    public StrapResponse(StrapModel data, String error) {
+    public StrapResponse(T data, String error) {
         this.data = data;
         this.error = error;
     }
