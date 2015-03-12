@@ -3,19 +3,20 @@ package com.strap.sdk.java;
 /**
  *
  * @author marcellebonterre
+ * @param <T>
  */
-public class StrapResponse {
+public class StrapResponse<T> {
 
-    public String body;
+    public T data;
     public String error;
 
     public StrapResponse() {
-        this.body = "";
+        this.data = null;
         this.error = "";
     }
 
-    public StrapResponse(String body, String error) {
-        this.body = body;
+    public StrapResponse(T data, String error) {
+        this.data = data;
         this.error = error;
     }
 }
