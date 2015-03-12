@@ -18,11 +18,32 @@ git clone git@github.com:strap/strap-sdk-java.git
 
 ### Usage
 ```java
+  // initialize Strap SDK with read token
   StrapSDK strap = new StrapSDK("QNIODsXElu3W7Csg452ge212GWQ0zjS2W3");
+ 
+  // fill map with url parameters and/or http request body key-value pairs
   Map<String, String> params = new HashMap<>();
-  params.put("guid", "someGuid");
-  StrapResponse res = strap.activity.get(params);
-  System.out.println(res.body);
-  System.out.println(res.error);
+  params.put("someKey", "someValue");
+ 
+  // make request for data based on params
+  StrapReportList activities = strap.getActivity(params);
+  System.out.println(activities.body);
+  System.out.println(activities.error);
+
+  StrapReportList today = strap.getToday(params);
+  System.out.println(today.body);
+  System.out.println(today.error);
+
+  StrapUserList users = strap.getUsers(params);
+  System.out.println(users.body);
+  System.out.println(users.error);
+
+  StrapReport report = strap.getReport(params);
+  System.out.println(report.body);
+  System.out.println(report.error);
+
+  StrapTrigger trigger = strap.getTrigger(params);
+  System.out.println(trigger.body);
+  System.out.println(trigger.error);
 ```
 
