@@ -26,6 +26,8 @@ curl -O https://s3.amazonaws.com/strap-sdk/strap-sdk-java.jar
   params.put("someKey", "someValue");
  
   if( strap.error != null ){
+    System.out.println(strap.error);
+  }else{
     // make request for data based on params
     StrapReportList activities = strap.getActivity(params);
     System.out.println(activities.data);
@@ -46,8 +48,6 @@ curl -O https://s3.amazonaws.com/strap-sdk/strap-sdk-java.jar
     StrapTrigger trigger = strap.getTrigger(params);
     System.out.println(trigger.data);
     System.out.println(trigger.error);
-  }else{
-    System.out.println(strap.error);
   }
 ```
 
