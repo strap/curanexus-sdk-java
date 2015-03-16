@@ -18,6 +18,12 @@ curl -O https://s3.amazonaws.com/strap-sdk/strap-sdk-java.jar
 
 ### Usage
 ```java
+  import com.strap.sdk.java.*;
+  .
+  .
+  .
+  .
+  .
   // initialize Strap SDK with read token
   StrapSDK strap = new StrapSDK("sXElu3W7DCsg452GWQ02ge21zjS2W3");
  
