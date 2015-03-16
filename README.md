@@ -19,7 +19,7 @@ git clone git@github.com:strap/strap-sdk-java.git
 ### Usage
 ```java
   // initialize Strap SDK with read token
-  StrapSDK strap = new StrapSDK("QNIODsXElu3W7Csg452ge212GWQ0zjS2W3");
+  StrapSDK strap = new StrapSDK("sXElu3W7DCsg452GWQ02ge21zjS2W3");
  
   // fill map with url parameters and/or http request body key-value pairs
   Map<String, String> params = new HashMap<>();
