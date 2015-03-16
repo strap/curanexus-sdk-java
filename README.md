@@ -25,25 +25,29 @@ curl -O https://s3.amazonaws.com/strap-sdk/strap-sdk-java.jar
   Map<String, String> params = new HashMap<>();
   params.put("someKey", "someValue");
  
-  // make request for data based on params
-  StrapReportList activities = strap.getActivity(params);
-  System.out.println(activities.data);
-  System.out.println(activities.error);
-
-  StrapReportList today = strap.getToday(params);
-  System.out.println(today.data);
-  System.out.println(today.error);
-
-  StrapUserList users = strap.getUsers(params);
-  System.out.println(users.data);
-  System.out.println(users.error);
-
-  StrapReport report = strap.getReport(params);
-  System.out.println(report.data);
-  System.out.println(report.error);
-
-  StrapTrigger trigger = strap.getTrigger(params);
-  System.out.println(trigger.data);
-  System.out.println(trigger.error);
+  if( strap.error != null ){
+    // make request for data based on params
+    StrapReportList activities = strap.getActivity(params);
+    System.out.println(activities.data);
+    System.out.println(activities.error);
+  
+    StrapReportList today = strap.getToday(params);
+    System.out.println(today.data);
+    System.out.println(today.error);
+  
+    StrapUserList users = strap.getUsers(params);
+    System.out.println(users.data);
+    System.out.println(users.error);
+  
+    StrapReport report = strap.getReport(params);
+    System.out.println(report.data);
+    System.out.println(report.error);
+  
+    StrapTrigger trigger = strap.getTrigger(params);
+    System.out.println(trigger.data);
+    System.out.println(trigger.error);
+  }else{
+    System.out.println(strap.error);
+  }
 ```
 
