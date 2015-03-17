@@ -23,7 +23,7 @@ curl -O https://s3.amazonaws.com/strap-sdk/strap-sdk-java.jar
   // Project class definition goes here
   //
   // initialize Strap SDK with read token
-  StrapSDK strap = new StrapSDK("sXElu3W7DCsg452GWQ02ge21zjS2W3");
+  StrapSDK strap = new StrapSDK("ReadToken");
  
   // fill map with url parameters and/or http request body key-value pairs
   Map<String, String> params = new HashMap<>();
