@@ -94,7 +94,11 @@ public class Resource {
 
     private String paramsToQueryString(String url, Map<String, String> params) {
         String route = url;
-
+        // return unchange url if params not provided
+        if(0 >= params.size()){
+            return route;
+        }
+        
         // get list of allowed, optional parameters
         List<String> allowed = new ArrayList<>();
         for (String param : this.optional) {
