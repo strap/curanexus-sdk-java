@@ -2,6 +2,7 @@ package com.strap.sdk.java;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
@@ -76,12 +77,41 @@ public class StrapSDK {
         return rv;
     }
 
+    public StrapReportList getCurrentWeek() {
+        Map<String, String> params = new HashMap<>();
+        return this.getCurrentWeek(params);
+    }
+
+    public StrapReportList getCurrentWeek(Map<String, String> params) {
+        StrapResponse<String> res = call("week", "GET", params);
+        ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
+        StrapReportList rv = new StrapReportList(rs, res.error);
+        return rv;
+    }
+
+    public StrapReportList getCurrentMonth() {
+        Map<String, String> params = new HashMap<>();
+        return this.getCurrentMonth(params);
+    }
+
+    public StrapReportList getCurrentMonth(Map<String, String> params) {
+        StrapResponse<String> res = call("month", "GET", params);
+        ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
+        StrapReportList rv = new StrapReportList(rs, res.error);
+        return rv;
+    }
+
     public StrapReport getReport(Map<String, String> params) {
         StrapResponse<String> res = call("report", "GET", params);
         Type reportType = new TypeToken<StrapReportModel>() {
         }.getType();
-        StrapReportModel r = JSON.fromJson(res.data, reportType);
-        StrapReport rv = new StrapReport(r, res.error);
+        StrapReport rv;
+        try {
+            StrapReportModel r = JSON.fromJson(res.data, reportType);
+            rv = new StrapReport(r, res.error);
+        } catch (JsonParseException e) {
+            rv = new StrapReport(null, res.data);
+        }
         return rv;
 
     }
@@ -111,7 +141,16 @@ public class StrapSDK {
 
     public StrapTrigger getTrigger(Map<String, String> params) {
         StrapResponse<String> res = call("trigger", "GET", params);
-        return new StrapTrigger(res.data);
+        Type trigType = new TypeToken<StrapTriggerModel>() {
+        }.getType();
+        StrapTrigger rv;
+        try {
+            String r = JSON.fromJson(res.data, trigType);
+            rv = new StrapTrigger(r, res.error);
+        } catch (JsonParseException e) {
+            rv = new StrapTrigger(null, res.data);
+        }
+        return rv;
     }
 
     private ArrayList<StrapReportModel> jsonToReportList(String jsonStr) {
