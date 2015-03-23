@@ -42,7 +42,7 @@ public class StrapReportList extends StrapPagedResponse {
     }
 
     public boolean hasNext() {
-        return (super.numPages > 1 && super.currentPage < super.numPages);
+        return (super.numPages > 0 && super.currentPage < super.numPages);
     }
 
     public StrapReportList next() {
