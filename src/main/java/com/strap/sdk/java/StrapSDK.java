@@ -119,7 +119,7 @@ public class StrapSDK extends StrapSDKBase {
             Map<String, String> u = super.JSON.fromJson(arr.get(i), userType);
             us.add(u);
         }
-        StrapUserList rv = new StrapUserList(us, res.error);
+        StrapUserList rv = new StrapUserList(this, "month", params, us, res.error);
         return rv;
     }
 
@@ -131,9 +131,9 @@ public class StrapSDK extends StrapSDKBase {
         StrapTrigger rv;
         try {
             String r = super.JSON.fromJson(res.data, trigType);
-            rv = new StrapTrigger(r, res.error);
+            rv = new StrapTrigger(this, "trigger", params, r, res.error);
         } catch (JsonParseException e) {
-            rv = new StrapTrigger(res.data, res.data);
+            rv = new StrapTrigger(this, "trigger", params, res.data, res.error);
         }
         return rv;
     }
