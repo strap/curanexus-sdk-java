@@ -11,19 +11,28 @@ HEADERS: "X-Auth-Token": GET https://api2.straphq.com/discover
 Once the above has been fetched, strapSDK will fetch the API discover endpoint for the project and build its API.
 
 ### Installation
-
+Download the following Jar, and include it as one of your project's libraries.
 ```
-git clone git@github.com:strap/strap-sdk-java.git
+curl -O https://s3.amazonaws.com/strap-sdk/strap-sdk-java.jar
 ```
 
 ### Usage
 ```java
+  import com.strap.sdk.java.*;
+  //
+  // Project class definition goes here
+  //
   // initialize Strap SDK with read token
+<<<<<<< HEAD
   StrapSDK strap = new StrapSDK("Read-Token-Goes-Here");
+=======
+  StrapSDK strap = new StrapSDK("ReadToken");
+>>>>>>> 6043d4c072433f958a6ad3e5e765f94af2db27ab
  
   // fill map with url parameters and/or http request body key-value pairs
   Map<String, String> params = new HashMap<>();
   params.put("someKey", "someValue");
+<<<<<<< HEAD
 
  if (strap.hasError()) {
      System.out.println(strap.error);
