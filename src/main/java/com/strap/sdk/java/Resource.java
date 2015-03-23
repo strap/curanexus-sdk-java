@@ -59,13 +59,16 @@ public class Resource {
         String currentPage = res.header("X-Page");
         String nextPage = res.header("X-Next-Page");
 
+        if(numPages == null || currentPage == null || nextPage == null){
+            numPages = currentPage = nextPage = "0";
+        } else if("".equals(numPages) || "".equals(currentPage) || "".equals(nextPage)){
+            numPages = currentPage = nextPage = "0";
+        }
+                
         String body = res.body();
 
         StrapResponse<String> sr = validateResponse(body, rv);
-        if(numPages == null || currentPage == null || nextPage == null){
-            numPages = currentPage = nextPage = "0";
-        } else {
-        }
+
         sr.numPages = Integer.parseInt(numPages);
         sr.currentPage = Integer.parseInt(currentPage);
         sr.nextPage = Integer.parseInt(nextPage);
