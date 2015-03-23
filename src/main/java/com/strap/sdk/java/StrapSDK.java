@@ -50,6 +50,9 @@ public class StrapSDK extends StrapSDKBase {
         StrapResponse<String> res = super.call("today", "GET", params);
         ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
         StrapReportList rv = new StrapReportList(this, "today", params, rs, res.error);
+        rv.numPages = res.numPages;
+        rv.currentPage = res.currentPage;
+        rv.nextPage = res.nextPage;
         return rv;
     }
 
@@ -62,6 +65,9 @@ public class StrapSDK extends StrapSDKBase {
         StrapResponse<String> res = super.call("week", "GET", params);
         ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
         StrapReportList rv = new StrapReportList(this, "week", params, rs, res.error);
+        rv.numPages = res.numPages;
+        rv.currentPage = res.currentPage;
+        rv.nextPage = res.nextPage;
         return rv;
     }
 
@@ -74,6 +80,9 @@ public class StrapSDK extends StrapSDKBase {
         StrapResponse<String> res = super.call("month", "GET", params);
         ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
         StrapReportList rv = new StrapReportList(this, "month", params, rs, res.error);
+        rv.numPages = res.numPages;
+        rv.currentPage = res.currentPage;
+        rv.nextPage = res.nextPage;
         return rv;
     }
 
