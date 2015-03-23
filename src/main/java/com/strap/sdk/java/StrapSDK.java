@@ -26,42 +26,6 @@ public class StrapSDK extends StrapSDKBase {
         return rv;
     }
 
-    public StrapReportList getToday() {
-        Map<String, String> params = new HashMap<>();
-        return this.getToday(params);
-    }
-
-    public StrapReportList getToday(Map<String, String> params) {
-        StrapResponse<String> res = super.call("today", "GET", params);
-        ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
-        StrapReportList rv = new StrapReportList(rs, res.error);
-        return rv;
-    }
-
-    public StrapReportList getWeek() {
-        Map<String, String> params = new HashMap<>();
-        return this.getWeek(params);
-    }
-
-    public StrapReportList getWeek(Map<String, String> params) {
-        StrapResponse<String> res = super.call("week", "GET", params);
-        ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
-        StrapReportList rv = new StrapReportList(rs, res.error);
-        return rv;
-    }
-
-    public StrapReportList getMonth() {
-        Map<String, String> params = new HashMap<>();
-        return this.getMonth(params);
-    }
-
-    public StrapReportList getMonth(Map<String, String> params) {
-        StrapResponse<String> res = super.call("month", "GET", params);
-        ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
-        StrapReportList rv = new StrapReportList(rs, res.error);
-        return rv;
-    }
-
     public StrapReport getReport(Map<String, String> params) {
         StrapResponse<String> res = super.call("report", "GET", params);
         Type reportType = new TypeToken<StrapReportModel>() {
@@ -75,6 +39,42 @@ public class StrapSDK extends StrapSDKBase {
         }
         return rv;
 
+    }
+
+    public StrapReportList getToday() {
+        Map<String, String> params = new HashMap<>();
+        return this.getToday(params);
+    }
+
+    public StrapReportList getToday(Map<String, String> params) {
+        StrapResponse<String> res = super.call("today", "GET", params);
+        ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
+        StrapReportList rv = new StrapReportList(this, "today", params, rs, res.error);
+        return rv;
+    }
+
+    public StrapReportList getWeek() {
+        Map<String, String> params = new HashMap<>();
+        return this.getWeek(params);
+    }
+
+    public StrapReportList getWeek(Map<String, String> params) {
+        StrapResponse<String> res = super.call("week", "GET", params);
+        ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
+        StrapReportList rv = new StrapReportList(this, "week", params, rs, res.error);
+        return rv;
+    }
+
+    public StrapReportList getMonth() {
+        Map<String, String> params = new HashMap<>();
+        return this.getMonth(params);
+    }
+
+    public StrapReportList getMonth(Map<String, String> params) {
+        StrapResponse<String> res = super.call("month", "GET", params);
+        ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
+        StrapReportList rv = new StrapReportList(this, "month", params, rs, res.error);
+        return rv;
     }
 
     public StrapUserList getUsers() {
@@ -114,7 +114,7 @@ public class StrapSDK extends StrapSDKBase {
         return rv;
     }
 
-    private ArrayList<StrapReportModel> jsonToReportList(String jsonStr) {
+    protected ArrayList<StrapReportModel> jsonToReportList(String jsonStr) {
         JsonParser parser = new JsonParser();
 
         JsonArray arr = parser.parse(jsonStr).getAsJsonArray();

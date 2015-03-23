@@ -5,7 +5,7 @@ package com.strap.sdk.java;
  * @author marcellebonterre
  * @param <T>
  */
-public class StrapResponse<T> {
+public class StrapResponse<T> extends StrapPagedResponse {
 
     public T data;
     public String error;
