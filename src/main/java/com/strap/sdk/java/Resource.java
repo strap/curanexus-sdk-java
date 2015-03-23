@@ -52,9 +52,24 @@ public class Resource {
         route = paramsToQueryString(route, params);
         reqParams.put("route", route);
 
-        String res = httpGet(reqParams);
-        return validateResponse(res, rv);
+        // make request
+        HttpRequest res = httpGet(reqParams);
 
+        String numPages = res.header("X-Pages");
+        String currentPage = res.header("X-Page");
+        String nextPage = res.header("X-Next-Page");
+
+        String body = res.body();
+
+        StrapResponse<String> sr = validateResponse(body, rv);
+        if(numPages == null || currentPage == null || nextPage == null){
+            numPages = currentPage = nextPage = "0";
+        } else {
+        }
+        sr.numPages = Integer.parseInt(numPages);
+        sr.currentPage = Integer.parseInt(currentPage);
+        sr.nextPage = Integer.parseInt(nextPage);
+        return sr;
     }
 
     private StrapResponse<String> validateResponse(String res, StrapResponse<String> rv) {
@@ -95,10 +110,10 @@ public class Resource {
     private String paramsToQueryString(String url, Map<String, String> params) {
         String route = url;
         // return unchange url if params not provided
-        if(0 >= params.size()){
+        if (0 >= params.size()) {
             return route;
         }
-        
+
         // get list of allowed, optional parameters
         List<String> allowed = new ArrayList<>();
         for (String param : this.optional) {
@@ -167,11 +182,10 @@ public class Resource {
         return tmp;
     }
 
-    private String httpGet(Map<String, String> params) {
+    private HttpRequest httpGet(Map<String, String> params) {
         return HttpRequest
                 .get(params.get("route"))
-                .header("X-Auth-Token", this.token)
-                .body();
+                .header("X-Auth-Token", this.token);
     }
 
 }
