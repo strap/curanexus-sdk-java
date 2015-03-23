@@ -19,31 +19,90 @@ git clone git@github.com:strap/strap-sdk-java.git
 ### Usage
 ```java
   // initialize Strap SDK with read token
-  StrapSDK strap = new StrapSDK("QNIODsXElu3W7Csg452ge212GWQ0zjS2W3");
+  StrapSDK strap = new StrapSDK("Read-Token-Goes-Here");
  
   // fill map with url parameters and/or http request body key-value pairs
   Map<String, String> params = new HashMap<>();
   params.put("someKey", "someValue");
- 
-  // make request for data based on params
-  StrapReportList activities = strap.getActivity(params);
-  System.out.println(activities.data);
-  System.out.println(activities.error);
 
-  StrapReportList today = strap.getToday(params);
-  System.out.println(today.data);
-  System.out.println(today.error);
+ if (strap.hasError()) {
+     System.out.println(strap.error);
+ } else {
+   // make request for data based on params
 
-  StrapUserList users = strap.getUsers(params);
-  System.out.println(users.data);
-  System.out.println(users.error);
+    //"optional": 
+    //  "guid",
+    //  "page",
+    //  "per_page"
+   StrapReportList today = strap.getToday(params);
+   System.out.println(today.data);
+   System.out.println(today.error);
 
-  StrapReport report = strap.getReport(params);
-  System.out.println(report.data);
-  System.out.println(report.error);
+    //"optional":
+    //  "guid",
+    //  "page",
+    //  "per_page"
+   StrapReportList week = strap.getWeek(params);
+   System.out.println(week.data);
+   System.out.println(week.error);
+   
 
-  StrapTrigger trigger = strap.getTrigger(params);
-  System.out.println(trigger.data);
-  System.out.println(trigger.error);
+    //"optional": 
+    //  "guid",
+    //  "page",
+    //  "per_page"
+   StrapReportList month = strap.getMonth(params);
+   System.out.println(month.data);
+   System.out.println(month.error);
+   
+   ArrayList<StrapReportList> allMonth = strap.getMonth(params).getAll();
+   System.out.println(allMonth);
+   
+   ArrayList<StrapReportList> mth = new ArrayList<>();
+   while (strap.getMonth(params).hasNext()) {
+       mth.add(strap.getMonth(params).next());
+   }
+   System.out.println(mth);
+   
+   //"optional": 
+   //   "platform",
+   //   "count",
+   //   "page",
+   //   "per_page"
+   StrapUserList users = strap.getUsers(params);
+   System.out.println(users.data);
+   System.out.println(users.error);
+   
+   ArrayList<StrapReportList> allUsers = strap.getUsers(params).getAll();
+   System.out.println(allUsers);
+   
+    // "required":"triggerId",
+    // "optional": 
+    //  "page",
+    //  "per_page"
+   StrapTrigger trigger = strap.getTrigger(params);
+   System.out.println(trigger.data);
+   System.out.println(trigger.error);
+   
+   ArrayList<StrapReportList> allTrig = strap.getTrigger(params).getAll();
+   System.out.println(allTrig);
+   
+    //"required": "guid"
+    //"optional":
+    //  "date",
+    //  "count",
+    //  "start",
+    //  "end"
+   params.put("guid", "brian-fitbit");
+   StrapReportList activities = strap.getActivity(params);
+   System.out.println(activities.data);
+   System.out.println(activities.error);
+   
+   //"required":"id"
+   // params.put("id", "ID-GOES-HERE");
+   StrapReport report = strap.getReport(params);
+   System.out.println(report.data);
+   System.out.println(report.error);
+}
 ```
 
