@@ -15,6 +15,10 @@ Download the following Jar, and include it as one of your project's libraries.
 ```
 curl -O https://s3.amazonaws.com/strap-sdk/strap-sdk-java.jar
 ```
+## Additionally Strap-SDK-Java depends on Google's Json library GSON. Obtain (the JAR)[http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar] from Maven central.
+```
+http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar
+```
 
 ### Usage
 ```java
