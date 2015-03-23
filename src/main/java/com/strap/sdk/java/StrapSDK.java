@@ -19,6 +19,13 @@ public class StrapSDK extends StrapSDKBase {
         super(token);
     }
 
+    protected Map<String, String> addPerPage(Map<String, String> params) {
+        if (!params.containsKey("per_page")) {
+            params.put("per_page", "1");
+        }
+        return params;
+    }
+
     public StrapReportList getActivity(Map<String, String> params) {
         StrapResponse<String> res = super.call("activity", "GET", params);
         ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
@@ -27,6 +34,9 @@ public class StrapSDK extends StrapSDKBase {
     }
 
     public StrapReport getReport(Map<String, String> params) {
+        if(!params.containsKey("id")){
+            return new StrapReport(null,"No id provided");
+        }
         StrapResponse<String> res = super.call("report", "GET", params);
         Type reportType = new TypeToken<StrapReportModel>() {
         }.getType();
@@ -47,6 +57,7 @@ public class StrapSDK extends StrapSDKBase {
     }
 
     public StrapReportList getToday(Map<String, String> params) {
+        params = addPerPage(params);
         StrapResponse<String> res = super.call("today", "GET", params);
         ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
         StrapReportList rv = new StrapReportList(this, "today", params, rs, res.error);
@@ -62,6 +73,7 @@ public class StrapSDK extends StrapSDKBase {
     }
 
     public StrapReportList getWeek(Map<String, String> params) {
+        params = addPerPage(params);
         StrapResponse<String> res = super.call("week", "GET", params);
         ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
         StrapReportList rv = new StrapReportList(this, "week", params, rs, res.error);
@@ -77,6 +89,7 @@ public class StrapSDK extends StrapSDKBase {
     }
 
     public StrapReportList getMonth(Map<String, String> params) {
+        params = addPerPage(params);
         StrapResponse<String> res = super.call("month", "GET", params);
         ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
         StrapReportList rv = new StrapReportList(this, "month", params, rs, res.error);
@@ -92,6 +105,7 @@ public class StrapSDK extends StrapSDKBase {
     }
 
     public StrapUserList getUsers(Map<String, String> params) {
+        params = addPerPage(params);
         StrapResponse<String> res = super.call("users", "GET", params);
 
         JsonParser parser = new JsonParser();
@@ -110,6 +124,7 @@ public class StrapSDK extends StrapSDKBase {
     }
 
     public StrapTrigger getTrigger(Map<String, String> params) {
+        params = addPerPage(params);
         StrapResponse<String> res = super.call("trigger", "GET", params);
         Type trigType = new TypeToken<StrapTriggerModel>() {
         }.getType();
