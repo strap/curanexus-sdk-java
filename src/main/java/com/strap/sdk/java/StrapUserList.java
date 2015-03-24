@@ -40,6 +40,7 @@ public class StrapUserList extends StrapPagedResponse {
         while (this.hasNext()) {
             this.data.addAll(this.next().data);
         }
+        super.currentPage = 1;
         return this;
     }
 

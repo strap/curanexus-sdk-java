@@ -24,6 +24,13 @@ public class StrapSDK extends StrapSDKBase {
         return params;
     }
 
+    protected Map<String, String> resetCurrentPage(Map<String, String> params) {
+        if (!params.containsKey("page")) {
+            params.put("page", "1");
+        }
+        return params;
+    }
+    
     public StrapReportList getActivity(Map<String, String> params) {
         StrapResponse<String> res = super.call("activity", "GET", params);
         ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
@@ -56,6 +63,7 @@ public class StrapSDK extends StrapSDKBase {
 
     public StrapReportList getToday(Map<String, String> params) {
         params = addPerPage(params);
+        params = resetCurrentPage(params);
         StrapResponse<String> res = super.call("today", "GET", params);
         ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
         StrapReportList rv = new StrapReportList(this, "today", params, rs, res.error);
@@ -72,6 +80,7 @@ public class StrapSDK extends StrapSDKBase {
 
     public StrapReportList getWeek(Map<String, String> params) {
         params = addPerPage(params);
+        params = resetCurrentPage(params);
         StrapResponse<String> res = super.call("week", "GET", params);
         ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
         StrapReportList rv = new StrapReportList(this, "week", params, rs, res.error);
@@ -88,6 +97,7 @@ public class StrapSDK extends StrapSDKBase {
 
     public StrapReportList getMonth(Map<String, String> params) {
         params = addPerPage(params);
+//        params = resetCurrentPage(params);
         StrapResponse<String> res = super.call("month", "GET", params);
         ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
         StrapReportList rv = new StrapReportList(this, "month", params, rs, res.error);
@@ -104,6 +114,7 @@ public class StrapSDK extends StrapSDKBase {
 
     public StrapUserList getUsers(Map<String, String> params) {
         params = addPerPage(params);
+        params = resetCurrentPage(params);
         StrapResponse<String> res = super.call("users", "GET", params);
 
         Type userType = new TypeToken< ArrayList<StrapUserModel>>() {
@@ -119,7 +130,6 @@ public class StrapSDK extends StrapSDKBase {
     }
 
     public StrapTrigger getTrigger(Map<String, String> params) {
-        params = addPerPage(params);
         StrapResponse<String> res = super.call("trigger", "GET", params);
         
         Type trigType = new TypeToken<StrapTriggerModel>() { }.getType();

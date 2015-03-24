@@ -63,15 +63,16 @@ http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar
    System.out.println(month.data);
    System.out.println(month.error);
    
-   StrapReportList allMonth = strap.getMonth(params).getAll();
-   System.out.println(allMonth);
-   
    ArrayList<StrapReportList> mth = new ArrayList<>();
-   while (strap.getMonth(params).hasNext()) {
-       mth.add(strap.getMonth(params).next());
+   mth.add(month);
+   while (month.hasNext()) {
+       mth.add(month.next());
    }
    System.out.println(mth);
    
+   StrapReportList allMonth = strap.getMonth(params).getAll();
+   System.out.println(allMonth);
+
    //"optional": 
    //   "platform",
    //   "count",
