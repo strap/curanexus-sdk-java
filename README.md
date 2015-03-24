@@ -92,9 +92,6 @@ http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar
    System.out.println(trigger.data);
    System.out.println(trigger.error);
    
-   StrapReportList allTrig = strap.getTrigger(params).getAll();
-   System.out.println(allTrig);
-   
     //"required": "guid"
     //"optional":
     //  "date",
