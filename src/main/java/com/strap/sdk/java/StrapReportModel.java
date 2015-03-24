@@ -11,7 +11,6 @@ public class StrapReportModel {
     public long timestamp;
     public String date;
     public String type;
-    public int count;
     public String guid;
     public ArrayList<StrapProject> projects;
     public ArrayList<String> fired;
