@@ -85,10 +85,7 @@ http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar
    StrapUserList allUsers = strap.getUsers(params).getAll();
    System.out.println(allUsers.data);
    
-    // "required":"triggerId",
-    // "optional": 
-    //  "page",
-    //  "per_page"
+    // "required":"triggerId"
    StrapTrigger trigger = strap.getTrigger(params);
    System.out.println(trigger.data);
    System.out.println(trigger.error);
