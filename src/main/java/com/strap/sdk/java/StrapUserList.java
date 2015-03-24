@@ -3,6 +3,7 @@ package com.strap.sdk.java;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,7 +21,7 @@ public class StrapUserList extends StrapPagedResponse {
     public StrapUserList(StrapSDK strap, String service, Map<String, String> params, ArrayList<StrapUserModel> data, String error) {
         this.strap = strap;
         this.service = service;
-        this.params = params;
+        this.params = this.cloneParams(params);
         this.data = data;
         this.error = error;
     }
@@ -59,5 +60,12 @@ public class StrapUserList extends StrapPagedResponse {
 
         ArrayList<StrapUserModel> us = strap.JSON.fromJson(res.data, userType);
         return new StrapUserList(this.strap, this.service, this.params, us, res.error);
+    }
+    private Map<String,String> cloneParams(Map<String,String> params){
+        Map<String,String> p = new HashMap<>();
+        for (Map.Entry pair : params.entrySet()) {
+            p.put((String) pair.getKey(), (String) pair.getValue());
+        }
+        return p;
     }
 }
