@@ -7,6 +7,6 @@ import java.util.ArrayList;
  * @author marcellebonterre
  */
 public class StrapTriggerModel {
-    String trigger;
-    ArrayList<String> users;
+    public String trigger;
+    public ArrayList<StrapTriggerUserModel> users;
 }

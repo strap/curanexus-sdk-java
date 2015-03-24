@@ -1,8 +1,6 @@
 package com.strap.sdk.java;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -123,15 +121,11 @@ public class StrapSDK extends StrapSDKBase {
     public StrapTrigger getTrigger(Map<String, String> params) {
         params = addPerPage(params);
         StrapResponse<String> res = super.call("trigger", "GET", params);
-        Type trigType = new TypeToken<StrapTriggerModel>() {
-        }.getType();
-        StrapTrigger rv;
-        try {
-            String r = super.JSON.fromJson(res.data, trigType);
-            rv = new StrapTrigger(this, "trigger", params, r, res.error);
-        } catch (JsonParseException e) {
-            rv = new StrapTrigger(this, "trigger", params, res.data, res.error);
-        }
+        
+        Type trigType = new TypeToken<StrapTriggerModel>() { }.getType();
+        StrapTriggerModel t = super.JSON.fromJson(res.data, trigType);
+
+        StrapTrigger rv = new StrapTrigger(this, "trigger", params, t, res.error);
         rv.numPages = res.numPages;
         rv.currentPage = res.currentPage;
         rv.nextPage = res.nextPage;
@@ -139,17 +133,8 @@ public class StrapSDK extends StrapSDKBase {
     }
 
     protected ArrayList<StrapReportModel> jsonToReportList(String jsonStr) {
-        JsonParser parser = new JsonParser();
-
-        JsonArray arr = parser.parse(jsonStr).getAsJsonArray();
-
-        ArrayList<StrapReportModel> rv = new ArrayList<>();
-        for (int i = 0, numObjs = arr.size(); i < numObjs; i++) {
-            Type reportType = new TypeToken<StrapReportModel>() {
-            }.getType();
-            StrapReportModel r = super.JSON.fromJson(arr.get(i), reportType);
-            rv.add(r);
-        }
+        Type reportType = new TypeToken<ArrayList<StrapReportModel>>() { }.getType();
+        ArrayList<StrapReportModel> rv = super.JSON.fromJson(jsonStr, reportType);
         return rv;
     }
 }
