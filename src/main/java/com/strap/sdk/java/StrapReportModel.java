@@ -17,7 +17,7 @@ public class StrapReportModel {
     public StrapBody body;
     public StrapFood food;
     public StrapSleep sleep;
-    public StrapAggregate Activity;
-    public StrapAggregate Average;
+    public StrapAggregate activity;
+    public StrapAggregate average;
     public ArrayList<StrapAggregate> components;
 }
