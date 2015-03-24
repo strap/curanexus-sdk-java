@@ -63,7 +63,7 @@ http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar
    System.out.println(month.data);
    System.out.println(month.error);
    
-   ArrayList<StrapReportList> allMonth = strap.getMonth(params).getAll();
+   StrapReportList allMonth = strap.getMonth(params).getAll();
    System.out.println(allMonth);
    
    ArrayList<StrapReportList> mth = new ArrayList<>();
@@ -81,8 +81,8 @@ http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar
    System.out.println(users.data);
    System.out.println(users.error);
    
-   ArrayList<StrapReportList> allUsers = strap.getUsers(params).getAll();
-   System.out.println(allUsers);
+   StrapUserList allUsers = strap.getUsers(params).getAll();
+   System.out.println(allUsers.data);
    
     // "required":"triggerId",
     // "optional": 
@@ -92,7 +92,7 @@ http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar
    System.out.println(trigger.data);
    System.out.println(trigger.error);
    
-   ArrayList<StrapReportList> allTrig = strap.getTrigger(params).getAll();
+   StrapReportList allTrig = strap.getTrigger(params).getAll();
    System.out.println(allTrig);
    
     //"required": "guid"

@@ -33,12 +33,11 @@ public class StrapReportList extends StrapPagedResponse {
         this.error = error;
     }
 
-    public ArrayList<StrapReportList> getAll() {
-        ArrayList<StrapReportList> reports = new ArrayList<>();
+    public StrapReportList getAll() {
         while (this.hasNext()) {
-            reports.add(this.next());
+            this.data.addAll(this.next().data);
         }
-        return reports;
+        return this;
     }
 
     public boolean hasNext() {
