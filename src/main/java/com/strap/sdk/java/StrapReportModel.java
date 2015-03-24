@@ -12,10 +12,10 @@ public class StrapReportModel {
     public String date;
     public String type;
     public String guid;
-    public StrapBody body;
-    public StrapFood food;
-    public StrapSleep sleep;
-    public StrapAggregate activity;
-    public StrapAggregate average;
-    public ArrayList<StrapAggregate> components;
+    public StrapBodyModel body;
+    public StrapFoodModel food;
+    public StrapSleepModel sleep;
+    public StrapAggregateModel activity;
+    public StrapAggregateModel average;
+    public ArrayList<StrapAggregateModel> components;
 }

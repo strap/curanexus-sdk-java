@@ -4,7 +4,7 @@ package com.strap.sdk.java;
  *
  * @author marcellebonterre
  */
-public class StrapSleep {
+public class StrapSleepModel {
 
     public int start;
     public int duration;

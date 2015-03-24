@@ -1,5 +1,7 @@
 package com.strap.sdk.java;
 
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -9,13 +11,13 @@ import java.util.Map;
  */
 public class StrapUserList extends StrapPagedResponse {
 
-    public ArrayList<Map<String, String>> data;
+    public ArrayList<StrapUserModel> data;
     public String error;
     private StrapSDK strap;
     private String service;
     Map<String, String> params;
 
-    public StrapUserList(StrapSDK strap, String service, Map<String, String> params,ArrayList<Map<String, String>>  data, String error) {
+    public StrapUserList(StrapSDK strap, String service, Map<String, String> params, ArrayList<StrapUserModel> data, String error) {
         this.strap = strap;
         this.service = service;
         this.params = params;
@@ -23,34 +25,38 @@ public class StrapUserList extends StrapPagedResponse {
         this.error = error;
     }
 
-    public StrapUserList(ArrayList<Map<String, String>> data) {
+    public StrapUserList(ArrayList<StrapUserModel> data) {
         this.data = data;
         this.error = "";
 
     }
 
-    public StrapUserList(ArrayList<Map<String, String>> data, String error) {
+    public StrapUserList(ArrayList<StrapUserModel> data, String error) {
         this.data = data;
         this.error = error;
     }
 
-    public ArrayList<StrapReportList> getAll() {
-        ArrayList<StrapReportList> reports = new ArrayList<>();
+    public StrapUserList getAll() {
         while (this.hasNext()) {
-            reports.add(this.next());
+            this.data.addAll(this.next().data);
         }
-        return reports;
+        return this;
     }
 
     public boolean hasNext() {
         return (super.numPages > 0 && super.currentPage < super.numPages);
     }
 
-    public StrapReportList next() {
+    public StrapUserList next() {
         super.currentPage++;
         params.put("page", Integer.toString(super.currentPage));
+        
         StrapResponse<String> res = strap.call(this.service, "GET", this.params);
-        ArrayList<StrapReportModel> rs = strap.jsonToReportList(res.data);
-        return new StrapReportList(this.strap, this.service, this.params, rs, res.error);
+
+        Type userType = new TypeToken<StrapUserModel>() {
+        }.getType();
+
+        ArrayList<StrapUserModel> us = strap.JSON.fromJson(res.data, userType);
+        return new StrapUserList(this.strap, this.service, this.params, us, res.error);
     }
 }
