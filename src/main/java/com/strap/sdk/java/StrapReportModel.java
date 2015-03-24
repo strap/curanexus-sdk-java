@@ -12,7 +12,6 @@ public class StrapReportModel {
     public String date;
     public String type;
     public String guid;
-    public ArrayList<String> fired;
     public StrapBody body;
     public StrapFood food;
     public StrapSleep sleep;
