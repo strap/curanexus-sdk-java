@@ -34,8 +34,8 @@ public class StrapSDK extends StrapSDKBase {
     }
 
     public StrapReport getReport(Map<String, String> params) {
-        if(!params.containsKey("id")){
-            return new StrapReport(null,"No id provided");
+        if (!params.containsKey("id")) {
+            return new StrapReport(null, "No id provided");
         }
         StrapResponse<String> res = super.call("report", "GET", params);
         Type reportType = new TypeToken<StrapReportModel>() {
@@ -108,18 +108,15 @@ public class StrapSDK extends StrapSDKBase {
         params = addPerPage(params);
         StrapResponse<String> res = super.call("users", "GET", params);
 
-        JsonParser parser = new JsonParser();
+        Type userType = new TypeToken< ArrayList<StrapUserModel>>() {
+        }.getType();
 
-        JsonArray arr = parser.parse(res.data).getAsJsonArray();
-
-        ArrayList<Map<String, String>> us = new ArrayList<>();
-        for (int i = 0, numObjs = arr.size(); i < numObjs; i++) {
-            Type userType = new TypeToken<Map<String, String>>() {
-            }.getType();
-            Map<String, String> u = super.JSON.fromJson(arr.get(i), userType);
-            us.add(u);
-        }
-        StrapUserList rv = new StrapUserList(this, "month", params, us, res.error);
+        ArrayList<StrapUserModel> users = super.JSON.fromJson(res.data, userType);
+        
+        StrapUserList rv = new StrapUserList(this, "month", params, users, res.error);
+        rv.numPages = res.numPages;
+        rv.currentPage = res.currentPage;
+        rv.nextPage = res.nextPage;
         return rv;
     }
 
@@ -135,6 +132,9 @@ public class StrapSDK extends StrapSDKBase {
         } catch (JsonParseException e) {
             rv = new StrapTrigger(this, "trigger", params, res.data, res.error);
         }
+        rv.numPages = res.numPages;
+        rv.currentPage = res.currentPage;
+        rv.nextPage = res.nextPage;
         return rv;
     }
 

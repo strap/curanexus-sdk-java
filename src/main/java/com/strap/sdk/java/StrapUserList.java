@@ -53,7 +53,7 @@ public class StrapUserList extends StrapPagedResponse {
         
         StrapResponse<String> res = strap.call(this.service, "GET", this.params);
 
-        Type userType = new TypeToken<StrapUserModel>() {
+        Type userType = new TypeToken<ArrayList<StrapUserModel>>() {
         }.getType();
 
         ArrayList<StrapUserModel> us = strap.JSON.fromJson(res.data, userType);
