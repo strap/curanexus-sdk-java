@@ -4,7 +4,7 @@ package com.strap.sdk.java;
  *
  * @author marcellebonterre
  */
-public class StrapAggregateModel {
+public class AggregateModel {
     public int calories;
     public int floors;
     public int steps;
