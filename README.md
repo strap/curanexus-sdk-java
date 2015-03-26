@@ -58,13 +58,6 @@ try {
    ReportList month = strap.month(params);
    System.out.println(month.getData());
    
-   ArrayList<ReportList> mth = new ArrayList<>();
-   mth.add(month);
-   while (month.hasNext()) {
-       mth.add(month.next());
-   }
-   System.out.println(mth);
-   
    ReportList allMonth = strap.month(params).getAll();
    System.out.println(allMonth);
 
