@@ -1,10 +1,11 @@
 package com.strap.sdk.java;
 
-import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Map;
  */
 public class StrapSDK extends StrapSDKBase {
 
-    public StrapSDK(String token) {
+    public StrapSDK(String token) throws StrapResponseParseException  {
         super(token);
     }
 
@@ -31,120 +32,84 @@ public class StrapSDK extends StrapSDKBase {
         return params;
     }
     
-    public StrapReportList getActivity(Map<String, String> params) {
-        StrapResponse<String> res = super.call("activity", "GET", params);
-        ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
-        StrapReportList rv = new StrapReportList(rs, res.error);
+    public ReportList getActivity(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
+        PagedResponse res = super.call("activity", "GET", params);
+        List<ReportModel> rs = jsonToReportList(res.getData());
+        ReportList rv = new ReportList(this, "activity", params, res);
         return rv;
     }
 
-    public StrapReport getReport(Map<String, String> params) {
+    public Report getReport(Map<String, String> params) throws StrapMalformedUrlException, StrapResourceNotFoundException, UnsupportedEncodingException  {
         if (!params.containsKey("id")) {
-            return new StrapReport(null, "No id provided");
+            throw new StrapMalformedUrlException("No ID provided.");
         }
-        StrapResponse<String> res = super.call("report", "GET", params);
-        Type reportType = new TypeToken<StrapReportModel>() {
-        }.getType();
-        StrapReport rv;
-        try {
-            StrapReportModel r = super.JSON.fromJson(res.data, reportType);
-            rv = new StrapReport(r, res.error);
-        } catch (JsonParseException e) {
-            rv = new StrapReport(null, res.data);
-        }
+        PagedResponse res = super.call("report", "GET", params);
+        Report rv = new Report(this,"report",params,res);
         return rv;
 
     }
 
-    public StrapReportList getToday() {
+    public ReportList getToday() throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         Map<String, String> params = new HashMap<>();
         return this.getToday(params);
     }
 
-    public StrapReportList getToday(Map<String, String> params) {
+    public ReportList getToday(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         params = addPerPage(params);
         params = resetCurrentPage(params);
-        StrapResponse<String> res = super.call("today", "GET", params);
-        ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
-        StrapReportList rv = new StrapReportList(this, "today", params, rs, res.error);
-        rv.numPages = res.numPages;
-        rv.currentPage = res.currentPage;
-        rv.nextPage = res.nextPage;
+        PagedResponse res = super.call("today", "GET", params);
+        ReportList rv = new ReportList(this, "today", params, res);
         return rv;
     }
 
-    public StrapReportList getWeek() {
+    public ReportList getWeek() throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         Map<String, String> params = new HashMap<>();
         return this.getWeek(params);
     }
 
-    public StrapReportList getWeek(Map<String, String> params) {
+    public ReportList getWeek(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         params = addPerPage(params);
         params = resetCurrentPage(params);
-        StrapResponse<String> res = super.call("week", "GET", params);
-        ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
-        StrapReportList rv = new StrapReportList(this, "week", params, rs, res.error);
-        rv.numPages = res.numPages;
-        rv.currentPage = res.currentPage;
-        rv.nextPage = res.nextPage;
+        PagedResponse res = super.call("week", "GET", params);
+        ReportList rv = new ReportList(this, "week", params, res);
         return rv;
     }
 
-    public StrapReportList getMonth() {
+    public ReportList getMonth() throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         Map<String, String> params = new HashMap<>();
         return this.getMonth(params);
     }
 
-    public StrapReportList getMonth(Map<String, String> params) {
+    public ReportList getMonth(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         params = addPerPage(params);
-//        params = resetCurrentPage(params);
-        StrapResponse<String> res = super.call("month", "GET", params);
-        ArrayList<StrapReportModel> rs = jsonToReportList(res.data);
-        StrapReportList rv = new StrapReportList(this, "month", params, rs, res.error);
-        rv.numPages = res.numPages;
-        rv.currentPage = res.currentPage;
-        rv.nextPage = res.nextPage;
+        params = resetCurrentPage(params);
+        PagedResponse res = super.call("month", "GET", params);
+        ReportList rv = new ReportList(this, "month", params, res);
         return rv;
     }
 
-    public StrapUserList getUsers() {
+    public UserList getUsers() throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         Map<String, String> params = new HashMap<>();
         return this.getUsers(params);
     }
 
-    public StrapUserList getUsers(Map<String, String> params) {
+    public UserList getUsers(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         params = addPerPage(params);
         params = resetCurrentPage(params);
-        StrapResponse<String> res = super.call("users", "GET", params);
-
-        Type userType = new TypeToken< ArrayList<StrapUserModel>>() {
-        }.getType();
-
-        ArrayList<StrapUserModel> users = super.JSON.fromJson(res.data, userType);
-        
-        StrapUserList rv = new StrapUserList(this, "month", params, users, res.error);
-        rv.numPages = res.numPages;
-        rv.currentPage = res.currentPage;
-        rv.nextPage = res.nextPage;
+        PagedResponse res = super.call("users", "GET", params);
+        UserList rv = new UserList(this, "month", params, res);
         return rv;
     }
 
-    public StrapTrigger getTrigger(Map<String, String> params) {
-        StrapResponse<String> res = super.call("trigger", "GET", params);
-        
-        Type trigType = new TypeToken<StrapTriggerModel>() { }.getType();
-        StrapTriggerModel t = super.JSON.fromJson(res.data, trigType);
-
-        StrapTrigger rv = new StrapTrigger(this, "trigger", params, t, res.error);
-        rv.numPages = res.numPages;
-        rv.currentPage = res.currentPage;
-        rv.nextPage = res.nextPage;
+    public Trigger getTrigger(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
+        PagedResponse res = super.call("trigger", "GET", params);
+        Trigger rv = new Trigger(this, "trigger", params, res);
         return rv;
     }
 
-    protected ArrayList<StrapReportModel> jsonToReportList(String jsonStr) {
-        Type reportType = new TypeToken<ArrayList<StrapReportModel>>() { }.getType();
-        ArrayList<StrapReportModel> rv = super.JSON.fromJson(jsonStr, reportType);
+    protected ArrayList<ReportModel> jsonToReportList(String jsonStr) {
+        Type reportType = new TypeToken<ArrayList<ReportModel>>() { }.getType();
+        ArrayList<ReportModel> rv = super.JSON.fromJson(jsonStr, reportType);
         return rv;
     }
 }
