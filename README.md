@@ -33,44 +33,39 @@ http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar
   Map<String, String> params = new HashMap<>();
   params.put("someKey", "someValue");
 
- if (strap.hasError()) {
-     System.out.println(strap.error);
- } else {
+try {
    // make request for data based on params
 
     //"optional": 
     //  "guid",
     //  "page",
     //  "per_page"
-   StrapReportList today = strap.getToday(params);
-   System.out.println(today.data);
-   System.out.println(today.error);
+   ReportList today = strap.today(params);
+   System.out.println(today.getData());
 
     //"optional":
     //  "guid",
     //  "page",
     //  "per_page"
-   StrapReportList week = strap.getWeek(params);
-   System.out.println(week.data);
-   System.out.println(week.error);
+   ReportList week = strap.week(params);
+   System.out.println(week.getData());
    
 
     //"optional": 
     //  "guid",
     //  "page",
     //  "per_page"
-   StrapReportList month = strap.getMonth(params);
-   System.out.println(month.data);
-   System.out.println(month.error);
+   ReportList month = strap.month(params);
+   System.out.println(month.getData());
    
-   ArrayList<StrapReportList> mth = new ArrayList<>();
+   ArrayList<ReportList> mth = new ArrayList<>();
    mth.add(month);
    while (month.hasNext()) {
        mth.add(month.next());
    }
    System.out.println(mth);
    
-   StrapReportList allMonth = strap.getMonth(params).getAll();
+   ReportList allMonth = strap.month(params).getAll();
    System.out.println(allMonth);
 
    //"optional": 
@@ -78,17 +73,15 @@ http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar
    //   "count",
    //   "page",
    //   "per_page"
-   StrapUserList users = strap.getUsers(params);
-   System.out.println(users.data);
-   System.out.println(users.error);
+   UserList users = strap.users(params);
+   System.out.println(users.getData());
    
-   StrapUserList allUsers = strap.getUsers(params).getAll();
-   System.out.println(allUsers.data);
+   UserList allUsers = strap.Users(params).getAll();
+   System.out.println(allUsers.getData());
    
     // "required":"triggerId"
-   StrapTrigger trigger = strap.getTrigger(params);
-   System.out.println(trigger.data);
-   System.out.println(trigger.error);
+   Trigger trigger = strap.trigger(params);
+   System.out.println(trigger.getData());
    
     //"required": "guid"
     //"optional":
@@ -97,15 +90,19 @@ http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar
     //  "start",
     //  "end"
    params.put("guid", "brian-fitbit");
-   StrapReportList activities = strap.getActivity(params);
-   System.out.println(activities.data);
-   System.out.println(activities.error);
+   ReportList activities = strap.activity(params);
+   System.out.println(activities.getData());
    
    //"required":"id"
    // params.put("id", "ID-GOES-HERE");
-   StrapReport report = strap.getReport(params);
-   System.out.println(report.data);
-   System.out.println(report.error);
+   StrapReport report = strap.report(params);
+   System.out.println(report.getData());
+
+} catch (StrapResponseParseException | 
+          StrapResourceNotFoundException | 
+          UnsupportedEncodingException | 
+          StrapMalformedUrlException ex) {
+    Logger.getLogger(TestSDK.class.getName()).log(Level.SEVERE, null, ex);
 }
 ```
 
