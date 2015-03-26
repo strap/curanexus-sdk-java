@@ -32,14 +32,14 @@ public class StrapSDK extends StrapSDKBase {
         return params;
     }
     
-    public ReportList getActivity(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
+    public ReportList activity(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         PagedResponse res = super.call("activity", "GET", params);
         List<ReportModel> rs = jsonToReportList(res.getData());
         ReportList rv = new ReportList(this, "activity", params, res);
         return rv;
     }
 
-    public Report getReport(Map<String, String> params) throws StrapMalformedUrlException, StrapResourceNotFoundException, UnsupportedEncodingException  {
+    public Report report(Map<String, String> params) throws StrapMalformedUrlException, StrapResourceNotFoundException, UnsupportedEncodingException  {
         if (!params.containsKey("id")) {
             throw new StrapMalformedUrlException("No ID provided.");
         }
@@ -49,12 +49,12 @@ public class StrapSDK extends StrapSDKBase {
 
     }
 
-    public ReportList getToday() throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
+    public ReportList today() throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         Map<String, String> params = new HashMap<>();
-        return this.getToday(params);
+        return this.today(params);
     }
 
-    public ReportList getToday(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
+    public ReportList today(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         params = addPerPage(params);
         params = resetCurrentPage(params);
         PagedResponse res = super.call("today", "GET", params);
@@ -62,12 +62,12 @@ public class StrapSDK extends StrapSDKBase {
         return rv;
     }
 
-    public ReportList getWeek() throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
+    public ReportList week() throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         Map<String, String> params = new HashMap<>();
-        return this.getWeek(params);
+        return this.week(params);
     }
 
-    public ReportList getWeek(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
+    public ReportList week(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         params = addPerPage(params);
         params = resetCurrentPage(params);
         PagedResponse res = super.call("week", "GET", params);
@@ -75,12 +75,12 @@ public class StrapSDK extends StrapSDKBase {
         return rv;
     }
 
-    public ReportList getMonth() throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
+    public ReportList month() throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         Map<String, String> params = new HashMap<>();
-        return this.getMonth(params);
+        return this.month(params);
     }
 
-    public ReportList getMonth(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
+    public ReportList month(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         params = addPerPage(params);
         params = resetCurrentPage(params);
         PagedResponse res = super.call("month", "GET", params);
@@ -88,12 +88,12 @@ public class StrapSDK extends StrapSDKBase {
         return rv;
     }
 
-    public UserList getUsers() throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
+    public UserList users() throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         Map<String, String> params = new HashMap<>();
-        return this.getUsers(params);
+        return this.users(params);
     }
 
-    public UserList getUsers(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
+    public UserList users(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         params = addPerPage(params);
         params = resetCurrentPage(params);
         PagedResponse res = super.call("users", "GET", params);
@@ -101,7 +101,7 @@ public class StrapSDK extends StrapSDKBase {
         return rv;
     }
 
-    public Trigger getTrigger(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
+    public Trigger trigger(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         PagedResponse res = super.call("trigger", "GET", params);
         Trigger rv = new Trigger(this, "trigger", params, res);
         return rv;
