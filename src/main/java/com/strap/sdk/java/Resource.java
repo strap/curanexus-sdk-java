@@ -2,6 +2,7 @@ package com.strap.sdk.java;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,8 +24,8 @@ public class Resource {
     public String method;
     public String uri;
     public String description;
-    public ArrayList<String> required;
-    public ArrayList<String> optional;
+    public List<String> required;
+    public List<String> optional;
 
     public String setToken(String token) {
         this.token = token;
@@ -41,9 +42,11 @@ public class Resource {
      * @param method
      * @param params
      * @return
+     * @throws java.io.UnsupportedEncodingException
+     * @throws com.strap.sdk.java.StrapResourceNotFoundException
+     * @throws com.strap.sdk.java.StrapMalformedUrlException
      */
-    public StrapResponse<String> call(String method, Map<String, String> params) {
-        StrapResponse<String> rv = new StrapResponse<>();
+    public PagedResponse call(String method, Map<String, String> params) throws UnsupportedEncodingException, StrapResourceNotFoundException, StrapMalformedUrlException  {
         Map<String, String> reqParams = new HashMap<>();
 
         // move url params from params object to url string
@@ -65,28 +68,24 @@ public class Resource {
             numPages = currentPage = nextPage = "0";
         }
                 
-        String body = res.body();
-
-        StrapResponse<String> sr = validateResponse(body, rv);
-
-        sr.numPages = Integer.parseInt(numPages);
-        sr.currentPage = Integer.parseInt(currentPage);
-        sr.nextPage = Integer.parseInt(nextPage);
-        return sr;
+        validateResponse(res.body());
+        
+        int nPages = Integer.parseInt(numPages);
+        int curPage = Integer.parseInt(currentPage);
+        int nxPage = Integer.parseInt(nextPage);
+        
+        PagedResponse rv = new PagedResponse(res.body(),nPages,curPage,nxPage);
+        
+        return rv;
     }
 
-    private StrapResponse<String> validateResponse(String res, StrapResponse<String> rv) {
+    private void validateResponse(String res) throws StrapResourceNotFoundException {
         Map<String, String> resMap = mapFromJSON(res);
-        if ((resMap == null
-                || !resMap.containsKey("success"))
-                || !"false".equals(resMap.get("success"))) {
-            rv.data = res;
-            rv.error = "";
-        } else {
-            rv.data = null;
-            rv.error = res;
+        if ((resMap != null
+                && resMap.containsKey("success"))
+                && "false".equals(resMap.get("success"))) {
+            throw new StrapResourceNotFoundException("Requested resource not found.");
         }
-        return rv;
     }
 
     private Map<String, String> mapFromJSON(String body) {
@@ -110,7 +109,7 @@ public class Resource {
         return body;
     }
 
-    private String paramsToQueryString(String url, Map<String, String> params) {
+    private String paramsToQueryString(String url, Map<String, String> params) throws StrapMalformedUrlException {
         String route = url;
         // return unchange url if params not provided
         if (0 >= params.size()) {
@@ -130,7 +129,6 @@ public class Resource {
             for (int j = 0, len = allowed.size(); j < len; j++) {
                 route += (j == 0 ? "?" : "&") + allowed.get(j);
             }
-
         }
         // return route with querystring
         return route;
@@ -138,7 +136,7 @@ public class Resource {
     }
 
     private String replaceUrlParams(String route, Map<String, String> params) {
-        String rv = "";
+        String rv;
 
         String regex = "\\{(\\S+?)\\}";
         Pattern p = Pattern.compile(regex);
@@ -166,23 +164,19 @@ public class Resource {
         return rv;
     }
 
-    private static String encodeString(String name) throws NullPointerException {
-        String tmp = null;
+    private static String encodeString(String name) throws StrapMalformedUrlException {
 
         if (name == null) {
-            return null;
+            return name;
         }
 
+        String rv;
         try {
-            tmp = java.net.URLEncoder.encode(name, "utf-8");
-        } catch (Exception e) {
+            rv = java.net.URLEncoder.encode(name, "utf-8");
+        } catch (UnsupportedEncodingException ex) {
+            throw new StrapMalformedUrlException();
         }
-
-        if (tmp == null) {
-            throw new NullPointerException();
-        }
-
-        return tmp;
+        return rv;
     }
 
     private HttpRequest httpGet(Map<String, String> params) {
