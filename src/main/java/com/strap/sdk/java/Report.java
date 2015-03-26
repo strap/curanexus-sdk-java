@@ -1,21 +1,15 @@
 package com.strap.sdk.java;
 
+import java.util.Map;
+
 /**
  *
  * @author marcellebonterre
  */
-public class StrapReport {
-   public StrapReportModel data;
-   public String error;
-   
-    public StrapReport(StrapReportModel data) {
-        this.data = data;
-        this.error = "";
+public class Report extends Response<ReportModel> {
 
+    public Report(StrapSDK strap, String service, Map<String, String> params, PagedResponse data) {
+        super(strap, service, params, data);
     }
 
-    public StrapReport(StrapReportModel data, String error) {
-        this.data = data;
-        this.error = error;
-    }
 }

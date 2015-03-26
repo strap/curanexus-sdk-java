@@ -67,14 +67,14 @@ public class Resource {
         } else if("".equals(numPages) || "".equals(currentPage) || "".equals(nextPage)){
             numPages = currentPage = nextPage = "0";
         }
-                
-        validateResponse(res.body());
+        
+        String body = res.body();
+        validateResponse(body);
         
         int nPages = Integer.parseInt(numPages);
         int curPage = Integer.parseInt(currentPage);
         int nxPage = Integer.parseInt(nextPage);
-        
-        PagedResponse rv = new PagedResponse(res.body(),nPages,curPage,nxPage);
+        PagedResponse rv = new PagedResponse(body,nPages,curPage,nxPage);
         
         return rv;
     }
@@ -183,6 +183,26 @@ public class Resource {
         return HttpRequest
                 .get(params.get("route"))
                 .header("X-Auth-Token", this.token);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<String> getRequired() {
+        return this.required;
+    }
+
+    public List<String> getOptional() {
+        return this.optional;
+    }
+
+    public void setRequired(ArrayList<String> arrayList) {
+        this.optional = arrayList;
+    }
+
+    public void setOptional(ArrayList<String> arrayList) {
+        this.required = arrayList;
     }
 
 }
