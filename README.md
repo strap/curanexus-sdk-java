@@ -92,7 +92,7 @@ try {
     //  "count",
     //  "start",
     //  "end"
-   params.put("guid", "brian-fitbit");
+   params.put("guid", "guid-goes-here");
    ReportList activities = strap.activity(params);
    System.out.println(activities.getData());
    
