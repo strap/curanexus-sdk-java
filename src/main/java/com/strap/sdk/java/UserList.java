@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,23 +18,30 @@ public class UserList extends Response<List<UserModel>> {
     public UserList(StrapSDK strap, String service, Map<String, String> params, PagedResponse data) {
         super(strap, service, params, data);
     }
-//
     
-    public UserList getAll() throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException {
-        while (this.hasNext()) {
-            // request next page of data
-            PagedResponse res = super.next();
-            // parse resposne into T-type
-            UserModel item = this.convertToUserModel(res.getData());
-            super.getData().add(item);
-        }
-        super.getPageData().setCurrentPage(1);
-        return this;
+    public UserList getAll() throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException {        
+        return this.getPages(super.getPageData().getNumPages());
     }
 
-    private UserModel convertToUserModel(String data) {
-        Type t = new TypeToken<UserModel>() {}.getType();
-        return JSON.fromJson(data, t);
+    public UserList getPages(int numPages) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException {
+       return getPages(numPages,super.getPageData().getDefaultPerPage());
+    }
+
+    public UserList getPages(int numPages, int perPage) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException {
+         // make requests for desired num pages
+        List<PagedResponse> res = super.manualGetPages(numPages, perPage);
+        
+        // replace this report list with result of manual call
+        List<UserModel> empty = new ArrayList<>();
+        this.setData(empty);
+        
+        for (PagedResponse r : res) {
+            // parse resposne into T-type
+            Type t = new TypeToken<List<UserModel>>() {}.getType();
+            List<UserModel> items = JSON.fromJson(r.getData(), t);
+            this.getData().addAll(items);
+        }
+        return this;
     }
     
 }

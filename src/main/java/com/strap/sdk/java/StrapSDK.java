@@ -18,12 +18,6 @@ public class StrapSDK extends StrapSDKBase {
         super(token);
     }
 
-    protected Map<String, String> addPerPage(Map<String, String> params) {
-        if (!params.containsKey("per_page")) {
-            params.put("per_page", "1");
-        }
-        return params;
-    }
 
     protected Map<String, String> resetCurrentPage(Map<String, String> params) {
         if (!params.containsKey("page")) {
@@ -55,7 +49,6 @@ public class StrapSDK extends StrapSDKBase {
     }
 
     public ReportList today(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
-        params = addPerPage(params);
         params = resetCurrentPage(params);
         PagedResponse res = super.call("today", "GET", params);
         ReportList rv = new ReportList(this, "today", params, res);
@@ -68,7 +61,6 @@ public class StrapSDK extends StrapSDKBase {
     }
 
     public ReportList week(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
-        params = addPerPage(params);
         params = resetCurrentPage(params);
         PagedResponse res = super.call("week", "GET", params);
         ReportList rv = new ReportList(this, "week", params, res);
@@ -81,7 +73,6 @@ public class StrapSDK extends StrapSDKBase {
     }
 
     public ReportList month(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
-        params = addPerPage(params);
         params = resetCurrentPage(params);
         PagedResponse res = super.call("month", "GET", params);
         ReportList rv = new ReportList(this, "month", params, res);
@@ -94,7 +85,6 @@ public class StrapSDK extends StrapSDKBase {
     }
 
     public UserList users(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
-        params = addPerPage(params);
         params = resetCurrentPage(params);
         PagedResponse res = super.call("users", "GET", params);
         UserList rv = new UserList(this, "month", params, res);
