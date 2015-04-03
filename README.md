@@ -58,6 +58,16 @@ try {
    ReportList month = strap.month(params);
    System.out.println(month.getData());
    
+   // get number of pages specified
+   // example here is get 4 pages of data
+   ReportList mth = strap.month(params).getPages(4);
+   System.out.println(mth.getData());
+
+   // get number of pages specified, with number of items per page
+   // example here is 6 pages of data at 2 items per page
+   ReportList amth = strap.month(params).getPages(6,2);
+   System.out.println(amth.getData());
+
    ReportList allMonth = strap.month(params).getAll();
    System.out.println(allMonth);
 
