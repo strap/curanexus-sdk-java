@@ -12,7 +12,6 @@ import java.util.Map;
  *
  * @author marcellebonterre
  * @param <T>
- * @param <R>
  */
 public class Response<T> {
 
