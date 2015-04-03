@@ -111,16 +111,17 @@ public class Resource {
 
     private String paramsToQueryString(String url, Map<String, String> params) throws StrapMalformedUrlException {
         String route = url;
-        // return unchange url if params not provided
-        if (0 >= params.size()) {
+        ArrayList<String> opts = this.getOptional();
+
+        // return unchanged url if params not provided or optional list empty
+        if (0 >= params.size() || opts == null) {
             return route;
         }
 
         // get list of allowed, optional parameters
         List<String> allowed = new ArrayList<>();
-        ArrayList<String> opts = this.getOptional();
         for (String param : opts) {
-            if (params.get(param) != null) {
+            if (params.containsKey(param)) {
                 allowed.add(param + "=" + encodeString(params.get(param)));
             }
         }
