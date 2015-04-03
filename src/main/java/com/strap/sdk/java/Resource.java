@@ -24,8 +24,8 @@ public class Resource {
     public String method;
     public String uri;
     public String description;
-    public List<String> required;
-    public List<String> optional;
+    public ArrayList<String> required;
+    public ArrayList<String> optional;
 
     public String setToken(String token) {
         this.token = token;
@@ -118,13 +118,14 @@ public class Resource {
 
         // get list of allowed, optional parameters
         List<String> allowed = new ArrayList<>();
-        for (String param : this.optional) {
+        ArrayList<String> opts = this.getOptional();
+        for (String param : opts) {
             if (params.get(param) != null) {
                 allowed.add(param + "=" + encodeString(params.get(param)));
             }
         }
 
-        // convert allowed, optional parameters to querystring
+        // convert filtered-for-valid parameters to querystring
         if (!allowed.isEmpty()) {
             for (int j = 0, len = allowed.size(); j < len; j++) {
                 route += (j == 0 ? "?" : "&") + allowed.get(j);
@@ -189,11 +190,11 @@ public class Resource {
         this.name = name;
     }
 
-    public List<String> getRequired() {
+    public ArrayList<String> getRequired() {
         return this.required;
     }
 
-    public List<String> getOptional() {
+    public ArrayList<String> getOptional() {
         return this.optional;
     }
 

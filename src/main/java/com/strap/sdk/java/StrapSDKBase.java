@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,26 +16,24 @@ public class StrapSDKBase {
     protected final Gson JSON = new Gson();
     private static final String discoveryURL = "https://api2.straphq.com/discover";
     private static String token;
-    private static Map<String, Resource> resources = new HashMap<>();
-    public String error;
+    private static final HashMap<String, Resource> resources = new HashMap<>();
 
     public StrapSDKBase(String token) throws StrapResponseParseException {
         StrapSDKBase.token = token;
-        StrapSDKBase.resources = discover();
-        this.fillResourcesDefaults();
+        HashMap<String,Resource> discover = discover();
+        StrapSDKBase.resources.putAll(this.fillResourcesDefaults( discover ));
     }
 
-    private Map<String, Resource> discover() throws StrapResponseParseException {
+    private HashMap<String, Resource> discover() throws StrapResponseParseException {
         String res = HttpRequest
                 .get(discoveryURL)
                 .header("X-Auth-Token", StrapSDKBase.token)
                 .body();
 
-//        save response to resources map using JSON
-        Map<String, Resource> resMap;
+        // save response to resources map using JSON
+        HashMap<String, Resource> resMap;
 
-        Type resMapType = new TypeToken< Map<String, Resource>>() {
-        }.getType();
+        Type resMapType = new TypeToken< HashMap<String, Resource>>() { }.getType();
         try {
             resMap = JSON.fromJson(res, resMapType);
         } catch (Exception e) {
@@ -49,29 +46,17 @@ public class StrapSDKBase {
         return StrapSDKBase.resources.get(name);
     }
 
-    private void fillResourcesDefaults() {
-        for (Map.Entry service : StrapSDKBase.resources.entrySet()) {
-            // fill name
-            String name = (String) service.getKey();
-            StrapSDKBase.getResourceByName(name).setName(name);
-            
-            // fill token
-            StrapSDKBase.resources.get(name).setToken(StrapSDKBase.token);
-            
-            // fill method
-            StrapSDKBase.getResourceByName(name).setMethod("GET");
-            
-            // fill required if null
-            if (StrapSDKBase.getResourceByName(name).getRequired() == null) {
-                StrapSDKBase.getResourceByName(name).setRequired(new ArrayList<String>());
-            }
-
-            // fill optional if null
-            if (StrapSDKBase.getResourceByName(name).getOptional() == null) {
-                StrapSDKBase.getResourceByName(name).setOptional(new ArrayList<String>());
-            }
-
+    private HashMap<String,Resource> fillResourcesDefaults(HashMap<String,Resource> m) {
+        HashMap<String, Resource> discover = new HashMap<>();
+        discover.putAll(m);
+        
+        for (Map.Entry r : discover.entrySet()) {
+            String name = (String) r.getKey();
+            Resource endpoint = discover.get(name);
+            endpoint.setName(name);
+            endpoint.setToken(StrapSDKBase.token);
         }
+        return discover;
     }
 
     protected PagedResponse call(String serviceName, String method, Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException {
