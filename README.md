@@ -59,7 +59,7 @@ try {
    System.out.println(month.getData());
    
    // get number of pages specified
-   // example here is get 4 pages of data
+   // example here gets 4 pages of data
    ReportList mth = strap.month(params).getPages(4);
    System.out.println(mth.getData());
 
