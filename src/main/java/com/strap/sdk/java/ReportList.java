@@ -2,6 +2,8 @@ package com.strap.sdk.java;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.strap.sdk.java.models.ReportModel;
+
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.strap.sdk.java;
+package com.strap.sdk.java.models;
 
 
 public class JobRequestModel {

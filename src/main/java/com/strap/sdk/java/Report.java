@@ -1,5 +1,7 @@
 package com.strap.sdk.java;
 
+import com.strap.sdk.java.models.ReportModel;
+
 import java.util.Map;
 
 /**
