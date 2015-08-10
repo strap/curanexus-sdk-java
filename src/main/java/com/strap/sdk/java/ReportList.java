@@ -37,7 +37,7 @@ public class ReportList extends Response<List<ReportModel>> {
         this.setData(empty);
         
         for (PagedResponse r : res) {
-            // parse resposne into T-type
+            // parse response into T-type
             Type t = new TypeToken<List<ReportModel>>() {}.getType();
             List<ReportModel> items = JSON.fromJson(r.getData(), t);
             this.getData().addAll(items);

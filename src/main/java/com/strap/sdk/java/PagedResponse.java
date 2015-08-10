@@ -95,7 +95,7 @@ public class PagedResponse {
         if(this.perPage != this.defaultPerPage)
             params.put("per_page", Integer.toString(this.perPage));
         
-        PagedResponse rv = strap.call(this.service, "GET", this.params);
+        PagedResponse rv = (PagedResponse) strap.call(this.service, "GET", this.params);
         rv.setPerPage(this.perPage);
         
         this.currentPage++;
