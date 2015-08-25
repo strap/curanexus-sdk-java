@@ -46,7 +46,8 @@ public class Resource {
      * @throws com.strap.sdk.java.StrapResourceNotFoundException
      * @throws com.strap.sdk.java.StrapMalformedUrlException
      */
-    public PagedResponse call(String method, Map<String, String> params) throws UnsupportedEncodingException, StrapResourceNotFoundException, StrapMalformedUrlException  {
+    public Object call(String method, Map<String, String> params, Object data) throws UnsupportedEncodingException, StrapResourceNotFoundException, StrapMalformedUrlException  {
+
         Map<String, String> reqParams = new HashMap<>();
 
         // move url params from params object to url string
@@ -55,29 +56,56 @@ public class Resource {
         route = paramsToQueryString(route, params);
         reqParams.put("route", route);
 
-        // make request
-        HttpRequest res = httpGet(reqParams);
 
-        String numPages = res.header("X-Pages");
-        String currentPage = res.header("X-Page");
-        String nextPage = res.header("X-Next-Page");
 
-        if(numPages == null || currentPage == null || nextPage == null){
-            numPages = currentPage = nextPage = "0";
-        } else if("".equals(numPages) || "".equals(currentPage) || "".equals(nextPage)){
-            numPages = currentPage = nextPage = "0";
+        if(method.equals("POST")) {
+
+            HttpRequest res = httpPost(reqParams, JSON.toJson(data));
+
+            return res.body();
+
+        } else if(method.equals("PUT")) {
+
+            HttpRequest res = httpPut(reqParams, JSON.toJson(data));
+
+            return res.body();
+
+
+        } else if(method.equals("DELETE")) {
+
+            HttpRequest res = httpDelete(reqParams);
+
+            return res.body();
+
+        } else {
+
+            HttpRequest res = httpGet(reqParams);
+
+            String numPages = res.header("X-Pages");
+            String currentPage = res.header("X-Page");
+            String nextPage = res.header("X-Next-Page");
+
+            if(numPages == null || currentPage == null || nextPage == null){
+                numPages = currentPage = nextPage = "0";
+            } else if("".equals(numPages) || "".equals(currentPage) || "".equals(nextPage)){
+                numPages = currentPage = nextPage = "0";
+            }
+
+            String body = res.body();
+            validateResponse(body);
+
+            int nPages = Integer.parseInt(numPages);
+            int curPage = Integer.parseInt(currentPage);
+            int nxPage = Integer.parseInt(nextPage);
+            PagedResponse rv = new PagedResponse(body,nPages,curPage,nxPage);
+
+            return rv;
         }
-        
-        String body = res.body();
-        validateResponse(body);
-        
-        int nPages = Integer.parseInt(numPages);
-        int curPage = Integer.parseInt(currentPage);
-        int nxPage = Integer.parseInt(nextPage);
-        PagedResponse rv = new PagedResponse(body,nPages,curPage,nxPage);
-        
-        return rv;
+
+
+
     }
+
 
     private void validateResponse(String res) throws StrapResourceNotFoundException {
         Map<String, String> resMap = mapFromJSON(res);
@@ -182,8 +210,32 @@ public class Resource {
     }
 
     private HttpRequest httpGet(Map<String, String> params) {
+
         return HttpRequest
                 .get(params.get("route"))
+                .header("X-Auth-Token", this.token);
+    }
+
+    private HttpRequest httpPost(Map<String, String> params, String body) {
+        return HttpRequest.post(params.get("route"))
+                .header("X-Auth-Token", this.token)
+                .header("Content-Type", "Application/JSON")
+                .send(body);
+    }
+
+    private HttpRequest httpPut(Map<String, String> params, String body) {
+
+        System.out.println(params.get("route"));
+        System.out.println(body);
+
+        return HttpRequest.put(params.get("route"))
+                .header("X-Auth-Token", this.token)
+                .header("Content-Type", "Application/JSON")
+                .send(body);
+    }
+
+    private HttpRequest httpDelete(Map<String, String> params) {
+        return HttpRequest.delete(params.get("route"))
                 .header("X-Auth-Token", this.token);
     }
 

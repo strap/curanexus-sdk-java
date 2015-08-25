@@ -1,4 +1,4 @@
-package com.strap.sdk.java;
+package com.strap.sdk.java.models;
 
 /**
  *
@@ -6,6 +6,7 @@ package com.strap.sdk.java;
  */
 public class AggregateModel {
     public int calories;
+    public float distance;
     public int floors;
     public int steps;
     public int activeMinutes;
