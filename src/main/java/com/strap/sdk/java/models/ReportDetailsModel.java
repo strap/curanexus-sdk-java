@@ -1,5 +1,7 @@
 package com.strap.sdk.java.models;
 
+import com.google.gson.internal.LinkedTreeMap;
+
 import java.util.HashMap;
 
 /**
@@ -13,12 +15,7 @@ public class ReportDetailsModel {
     public String type;
 
 
-    public HashMap<String, Object> summary;
-    public HashMap<String, Object> details;
-
-
-    public class DetailsModel {
-
-    }
+    public LinkedTreeMap<String, Object> summary;
+    public LinkedTreeMap<String, Object> details;
 
 }

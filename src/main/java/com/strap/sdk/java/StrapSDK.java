@@ -1,6 +1,7 @@
 package com.strap.sdk.java;
 
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import com.strap.sdk.java.models.*;
 
@@ -112,6 +113,14 @@ public class StrapSDK extends StrapSDKBase {
 
     }
 
+    public SegmentModel jobData(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException, StrapResponseParseException {
+
+        String res = ((PagedResponse) super.call("job_data", "GET", params)).getData();
+
+        return (SegmentModel) jsonToModel(res, SegmentModel.class);
+
+    }
+
     public JobModel createJob(JobRequestModel data) throws StrapMalformedUrlException, UnsupportedEncodingException, StrapResourceNotFoundException, StrapResponseParseException {
 
         String res = (String) super.call("job", "POST", new HashMap<String, String>(), data);
@@ -158,24 +167,35 @@ public class StrapSDK extends StrapSDKBase {
 
     }
 
-    public SegmentModel customSegmentation(Map<String, String> params) throws StrapMalformedUrlException, StrapResourceNotFoundException, StrapResponseParseException, UnsupportedEncodingException {
-
-        params.put("data", "true");
-
-        Type resType = new TypeToken<SegmentModel>() { }.getType();
-        String res = ((PagedResponse) super.call("job", "GET", params)).getData();
-
-        return (SegmentModel) jsonToModel(res, SegmentModel.class);
-
-    }
-
-
     public ReportDetailsModel[] reportDetails(Map<String, String> params) throws StrapMalformedUrlException, UnsupportedEncodingException, StrapResourceNotFoundException, StrapResponseParseException {
-
 
         String res = ((PagedResponse) super.call("raw", "GET", params)).getData();
 
         return (ReportDetailsModel[]) jsonToModel(res, ReportDetailsModel[].class);
+
+    }
+
+    public ReportWorkoutModel[] workout(Map<String, String> params) throws StrapMalformedUrlException, UnsupportedEncodingException, StrapResourceNotFoundException, StrapResponseParseException {
+
+        String res = ((PagedResponse) super.call("report_workout", "GET", params)).getData();
+
+        return (ReportWorkoutModel[]) jsonToModel(res, ReportWorkoutModel[].class);
+
+    }
+
+    public ReportFoodModel[] food(Map<String, String> params) throws StrapMalformedUrlException, UnsupportedEncodingException, StrapResourceNotFoundException, StrapResponseParseException {
+
+        String res = ((PagedResponse) super.call("report_food", "GET", params)).getData();
+
+        return (ReportFoodModel[]) jsonToModel(res, ReportFoodModel[].class);
+
+    }
+
+    public LinkedTreeMap<String, Object> trend(Map<String, String> params) throws StrapMalformedUrlException, UnsupportedEncodingException, StrapResourceNotFoundException, StrapResponseParseException {
+
+        String res = ((PagedResponse) super.call("trend", "GET", params)).getData();
+
+        return (LinkedTreeMap<String, Object>) jsonToModel(res, LinkedTreeMap.class);
 
     }
 

@@ -23,11 +23,13 @@ http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar
 ### Usage
 ```java
   import com.strap.sdk.java.*;
+  import com.google.gson.*;
   //
   // Project class definition goes here
   //
   // initialize Strap SDK with read token
   StrapSDK strap = new StrapSDK("Read-Token-Goes-Here");
+  Gson JSON = new Gson();
 
   // fill map with url parameters and/or http request body key-value pairs
   Map<String, String> params = new HashMap<>();
@@ -36,7 +38,7 @@ http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar
 try {
    // make request for data based on params
 
-    //"optional": 
+    //"optional":
     //  "guid",
     //  "page",
     //  "per_page"
@@ -49,15 +51,15 @@ try {
     //  "per_page"
    ReportList week = strap.week(params);
    System.out.println(week.getData());
-   
 
-    //"optional": 
+
+    //"optional":
     //  "guid",
     //  "page",
     //  "per_page"
    ReportList month = strap.month(params);
    System.out.println(month.getData());
-   
+
    // get number of pages specified
    // example here gets 4 pages of data
    ReportList mth = strap.month(params).getPages(4);
@@ -71,21 +73,21 @@ try {
    ReportList allMonth = strap.month(params).getAll();
    System.out.println(allMonth);
 
-   //"optional": 
+   //"optional":
    //   "platform",
    //   "count",
    //   "page",
    //   "per_page"
    UserList users = strap.users(params);
    System.out.println(users.getData());
-   
+
    UserList allUsers = strap.Users(params).getAll();
    System.out.println(allUsers.getData());
-   
+
     // "required":"triggerId"
    Trigger trigger = strap.trigger(params);
    System.out.println(trigger.getData());
-   
+
     //"required": "guid"
     //"optional":
     //  "date",
@@ -95,17 +97,70 @@ try {
    params.put("guid", "guid-goes-here");
    ReportList activities = strap.activity(params);
    System.out.println(activities.getData());
-   
-   //"required":"id"
-   // params.put("id", "ID-GOES-HERE");
+
+   // "required":"id"
+   params.put("id", "ID-GOES-HERE");
    StrapReport report = strap.report(params);
    System.out.println(report.getData());
 
-} catch (StrapResponseParseException | 
-          StrapResourceNotFoundException | 
-          UnsupportedEncodingException | 
+   // "optional":
+   //  "id"
+   //  "status",
+   JobModel[] jobs = strap.jobs(params);
+   System.out.println(JSON.toJson(jobs));
+
+   JobRequestModel jobRequest = new JobRequestModel();
+   jobRequest.name = "My Job";
+
+   JobModel job = strap.createJob(jobRequest);
+   System.out.println(JSON.toJson(jobs));
+
+   // "required":"id"
+   JobModel job = strap.updateJob(params, jobRequest);
+   System.out.println(JSON.toJson(jobs));
+
+   //"required":"id"
+   strap.deleteJob(params);
+
+   //"required":"id"
+   SegmentModel jobData = strap.jobData(params);
+   System.out.println(JSON.toJson(jobData));
+
+   SegmentModel[] segments = strap.segmentation()
+
+   // "optional":
+   //  "date",
+   //  "period"
+   SegmentModel[] segments = strap.segmentation(params)
+   System.out.println(JSON.toJson(segments));
+
+   //"required": "guid"
+   // "optional": "weekday"
+   BehaviorModel[] behavior = strap.behavior(params)
+   System.out.println(JSON.toJson(behavior));
+
+   //"required": "id"
+   ReportFoodModel[] food = strap.food(params);
+   System.out.println(JSON.toJson(food));
+
+   //"required": "id"
+   ReportWorkoutModel[] workout = strap.workout(params);
+   System.out.println(JSON.toJson(workout));
+
+   //"required": "id"
+   //"optional": "type"
+   ReportDetailsModel[] details = strap.reportDetails(params);
+   System.out.println(JSON.toJson(details));
+
+   // "required": "guid"
+   // "optional": "date"
+   LinkedTreeMap<String, Object> trendingData = sdk.trend(params);
+   System.out.println(JSON.toJson(trendingData));
+
+} catch (StrapResponseParseException |
+          StrapResourceNotFoundException |
+          UnsupportedEncodingException |
           StrapMalformedUrlException ex) {
     Logger.getLogger(TestSDK.class.getName()).log(Level.SEVERE, null, ex);
 }
 ```
-

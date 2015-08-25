@@ -1,5 +1,7 @@
 package com.strap.sdk.java.models;
 
+import com.google.gson.internal.LinkedTreeMap;
+
 import java.util.HashMap;
 
 /**
@@ -21,9 +23,9 @@ public class SegmentModel {
 
         public int clusterId;
 
-        public HashMap<String, Integer> mobile;
-        public HashMap<String, Integer> platforms;
-        public HashMap<String, Integer> triggers;
+        public LinkedTreeMap<String, Integer> mobile;
+        public LinkedTreeMap<String, Integer> platforms;
+        public LinkedTreeMap<String, Integer> triggers;
 
     }
 
@@ -35,9 +37,9 @@ public class SegmentModel {
 
         public int clusterId;
 
-        public HashMap<String, Integer> mobile;
-        public HashMap<String, Integer> platforms;
-        public HashMap<String, Integer> triggers;
+        public LinkedTreeMap<String, Integer> mobile;
+        public LinkedTreeMap<String, Integer> platforms;
+        public LinkedTreeMap<String, Integer> triggers;
 
     }
 
@@ -49,9 +51,9 @@ public class SegmentModel {
 
         public int clusterId;
 
-        public HashMap<String, Integer> mobile;
-        public HashMap<String, Integer> platforms;
-        public HashMap<String, Integer> triggers;
+        public LinkedTreeMap<String, Integer> mobile;
+        public LinkedTreeMap<String, Integer> platforms;
+        public LinkedTreeMap<String, Integer> triggers;
 
     }
 
@@ -64,9 +66,9 @@ public class SegmentModel {
 
         public int clusterId;
 
-        public HashMap<String, Integer> mobile;
-        public HashMap<String, Integer> platforms;
-        public HashMap<String, Integer> triggers;
+        public LinkedTreeMap<String, Integer> mobile;
+        public LinkedTreeMap<String, Integer> platforms;
+        public LinkedTreeMap<String, Integer> triggers;
 
     }
 
@@ -83,7 +85,7 @@ public class SegmentModel {
     public class GuidModel {
 
         public String guid;
-        public HashMap<String, Integer> triggers;
+        public LinkedTreeMap<String, Integer> triggers;
 
     }
 
