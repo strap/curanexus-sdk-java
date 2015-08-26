@@ -19,7 +19,7 @@ public class ReportList extends Response<List<ReportModel>> {
     private final Gson JSON = new Gson();
 
     public ReportList(StrapSDK strap, String service, Map<String, String> params, PagedResponse res) {
-        super(strap, service, params, res);
+        super(strap, service, params, res, new TypeToken<List<ReportModel>>(){});
     }
 
     public ReportList getAll() throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException {        

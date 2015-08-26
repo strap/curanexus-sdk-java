@@ -91,7 +91,7 @@ public class StrapSDK extends StrapSDKBase {
     public UserList users(Map<String, String> params) throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException  {
         params = resetCurrentPage(params);
         PagedResponse res = (PagedResponse) super.call("users", "GET", params);
-        UserList rv = new UserList(this, "month", params, res);
+        UserList rv = new UserList(this, "users", params, res);
         return rv;
     }
 
@@ -196,6 +196,16 @@ public class StrapSDK extends StrapSDKBase {
         String res = ((PagedResponse) super.call("trend", "GET", params)).getData();
 
         return (LinkedTreeMap<String, Object>) jsonToModel(res, LinkedTreeMap.class);
+
+    }
+
+
+    public TriggerUserList triggerData(Map<String, String> params) throws StrapMalformedUrlException, UnsupportedEncodingException, StrapResourceNotFoundException, StrapResponseParseException {
+
+        params = resetCurrentPage(params);
+        PagedResponse res = (PagedResponse) super.call("trigger_data", "GET", params);
+        TriggerUserList rv = new TriggerUserList(this, "trigger_data", params, res);
+        return rv;
 
     }
 

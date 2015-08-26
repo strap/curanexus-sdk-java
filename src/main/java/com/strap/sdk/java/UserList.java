@@ -18,7 +18,7 @@ public class UserList extends Response<List<UserModel>> {
     private final Gson JSON = new Gson();
 
     public UserList(StrapSDK strap, String service, Map<String, String> params, PagedResponse data) {
-        super(strap, service, params, data);
+        super(strap, service, params, data, new TypeToken<List<UserModel>>(){});
     }
     
     public UserList getAll() throws StrapResourceNotFoundException, UnsupportedEncodingException, StrapMalformedUrlException {        

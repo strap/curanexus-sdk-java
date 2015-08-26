@@ -88,6 +88,10 @@ try {
    Trigger trigger = strap.trigger(params);
    System.out.println(trigger.getData());
 
+    // "required":"triggerId"
+   TriggerUserList triggerUsers = strap.triggerData(params);
+   System.out.println(triggerUsers.getData());
+
     //"required": "guid"
     //"optional":
     //  "date",

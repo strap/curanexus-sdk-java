@@ -1,8 +1,12 @@
 package com.strap.sdk.java;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.strap.sdk.java.models.TriggerDataUserModel;
+
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +24,13 @@ public class Response<T> {
     private T data;
     private PagedResponse pageData;
 
-    public Response(StrapSDK strap, String service, Map<String, String> params, PagedResponse res) {
+    public Response(StrapSDK strap, String service, Map<String, String> params, PagedResponse res, TypeToken token) {
         pageData = new PagedResponse(strap, service, params, res);
-        Type t = new TypeToken<T>() {}.getType();
-        this.data = JSON.fromJson(res.getData(), t);
+        try {
+            this.data = JSON.fromJson(res.getData(), token.getType());
+        } catch(JsonSyntaxException ex) { // hack for trigger_data.
+            this.data = JSON.fromJson("[" + res.getData() + "]", token.getType());
+        }
     }
 
     public Response(T data) {
