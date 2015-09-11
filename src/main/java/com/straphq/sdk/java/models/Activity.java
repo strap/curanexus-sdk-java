@@ -1,10 +1,6 @@
-package com.strap.sdk.java.models;
+package com.straphq.sdk.java.models;
 
-/**
- *
- * @author marcellebonterre
- */
-public class AggregateModel {
+public class Activity extends StrapModel {
     public int calories;
     public float distance;
     public int floors;
@@ -12,5 +8,4 @@ public class AggregateModel {
     public int activeMinutes;
     public int nonactiveMinutes;
     public String updated;
-
 }

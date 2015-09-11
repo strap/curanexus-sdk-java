@@ -1,9 +1,6 @@
-package com.strap.sdk.java.models;
+package com.straphq.sdk.java.models;
 
-/**
- * @author Matt Johnson
- */
-public class ReportFoodModel {
+public class FoodReport {
 
     public String id;
     public String date;
@@ -36,5 +33,6 @@ public class ReportFoodModel {
     public float calcium;
     public float iron;
     public float cholesterol;
+
 
 }

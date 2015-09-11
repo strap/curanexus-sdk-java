@@ -1,6 +1,6 @@
-# strapSDK
+# Strap SDK Java
 
-Strap SDK Java provides an easy to use, chainable API for interacting with our API services. Its purpose is to abstract away resource information from our primary API, i.e. not having to manually track API information for your custom API endpoint.
+Strap SDK Java provides a basic, easy to use API for interacting with our API services.
 
 Strap SDK Java keys off of a global API discovery object using the read token for the API. The Strap SDK Java extracts the need for developers to know, manage, and integrate the API endpoints.
 
@@ -8,7 +8,7 @@ The a Project API discovery can be found here:
 
 HEADERS: "X-Auth-Token": GET https://api2.straphq.com/discover
 
-Once the above has been fetched, strapSDK will fetch the API discover endpoint for the project and build its API.
+Once the above has been fetched, StrapSDK will fetch the API discover endpoint for the project and build its API.
 
 ### Installation
 Download the following Jar, and include it as one of your project's libraries.
@@ -22,149 +22,161 @@ http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar
 
 ### Usage
 ```java
-  import com.strap.sdk.java.*;
-  import com.google.gson.*;
-  //
-  // Project class definition goes here
-  //
-  // initialize Strap SDK with read token
-  StrapSDK strap = new StrapSDK("Read-Token-Goes-Here");
-  Gson JSON = new Gson();
 
-  // fill map with url parameters and/or http request body key-value pairs
-  Map<String, String> params = new HashMap<>();
-  params.put("someKey", "someValue");
+import com.straphq.sdk.java.*;
+import com.straphq.sdk.java.models.User;
+import com.google.gson.*;
+
+//
+// Project class definition goes here
+//
+// initialize Strap SDK with read token
+StrapSDK strap = new StrapSDK("Read-Token-Goes-Here");
+Gson JSON = new Gson();
+
+// fill map with url parameters and/or http request body key-value pairs
+Map<String, String> params = new HashMap<>();
+params.put("someKey", "someValue");
 
 try {
-   // make request for data based on params
+// Required params: guid
+// Optional params: date, count, start, end
+params.put("guid", "my-guid");
+StrapResponse res = strap.get("activity", params);
+JsonElement data = res.getData(); // Get current page
+System.out.println(data);
 
-    //"optional":
-    //  "guid",
-    //  "page",
-    //  "per_page"
-   ReportList today = strap.today(params);
-   System.out.println(today.getData());
+// Optional params: guid, page, per_page
+StrapResponse res = strap.get("today", params);
+JsonElement data = res.getData(); // Get current page
+System.out.println(data);
 
-    //"optional":
-    //  "guid",
-    //  "page",
-    //  "per_page"
-   ReportList week = strap.week(params);
-   System.out.println(week.getData());
+// Optional params: guid, page, per_page
+StrapResponse res = strap.get("week", params);
+JsonElement data = res.getAll(); // get all pages
+System.out.println(data);
+
+// Optional params: guid, page, per_page
+StrapResponse res = strap.get("month", params);
+JsonElement data = res.getData();
+System.out.println(data);
+
+// Print all pages of data
+while((res = res.getNextPage()) != null) {
+    data = res.getData();
+    System.out.println(data);
+}
+
+// Optional params: platform, count ,page, per_page
+StrapResponse res = strap.get("users", params);
+JsonElement data = res.getAll();
+System.out.println(data);
+
+// Required params: guid
+params.put("guid", "my-guid");
+StrapResponse res = strap.get("user", params);
+JsonElement data = res.getData();
+System.out.println(data);
+
+// Optional params: date
+StrapResponse res = strap.get("segmentation", params);
+JsonElement data = res.getData();
+System.out.println(data);
+
+// Required params: weekday
+StrapResponse res = strap.get("behavior", params);
+JsonElement data = res.getData();
+System.out.println(data);
+
+// Optional params: date
+StrapResponse res = strap.get("trend", params);
+JsonElement data = res.getData();
+System.out.println(data);
+
+// Optional params: status
+StrapResponse res = strap.get("job", params);
+JsonElement data = res.getData();
+System.out.println(data);
+
+// Required params: name
+// Optional params: description. guids, clustesr, startDate, endDate, notificationUrl
+params.put("name", "My Segmentation");
+StrapResponse res = strap.post("job", params);
+JsonElement data = res.getData();
+System.out.println(data);
+
+// Required params: id
+params.put("id", "my-job-id");
+strap.delete("job", params);
+
+// Required params: id
+params.put("id", "my-job-id");
+StrapResponse res = strap.get("job_data", params);
+JsonElement data = res.getData();
+System.out.println(data);
+
+// Required params: id
+params.put("id", "my-report-id");
+StrapResponse res = strap.get("report", params);
+JsonElement data = res.getData();
+System.out.println(data);
+
+// Required params: id
+params.put("id", "my-report-id");
+StrapResponse res = strap.get("report_food", params);
+JsonElement data = res.getData();
+System.out.println(data);
+
+// Required params: id
+params.put("id", "my-report-id");
+StrapResponse res = strap.get("report_workout", params);
+JsonElement data = res.getData();
+System.out.println(data);
+
+// Required params: id
+// Optional params: type
+params.put("id", "my-report-id");
+StrapResponse res = strap.get("report_raw", params);
+JsonElement data = res.getData();
+System.out.println(data);
 
 
-    //"optional":
-    //  "guid",
-    //  "page",
-    //  "per_page"
-   ReportList month = strap.month(params);
-   System.out.println(month.getData());
+// Optional params: id, key, type, actionType
+StrapResponse res = strap.get("trigger", params);
+JsonElement data = res.getData();
+System.out.println(data);
 
-   // get number of pages specified
-   // example here gets 4 pages of data
-   ReportList mth = strap.month(params).getPages(4);
-   System.out.println(mth.getData());
+// Required params: active, name, type, range, conditions
+// Optional params: actionType, actionURL
+StrapResponse res = strap.post("trigger", params);
+JsonElement data = res.getData();
+System.out.println(data);
 
-   // get number of pages specified, with number of items per page
-   // example here is 6 pages of data at 2 items per page
-   ReportList amth = strap.month(params).getPages(6,2);
-   System.out.println(amth.getData());
+// Required params: id
+StrapResponse res = strap.delete("trigger", params);
+JsonElement data = res.getData();
+System.out.println(data);
 
-   ReportList allMonth = strap.month(params).getAll();
-   System.out.println(allMonth);
+// Required params: id
+// Optional params: page, per_page
+StrapResponse res = strap.delete("trigger_data", params);
+JsonElement data = res.getAll();
+System.out.println(data);
 
-   //"optional":
-   //   "platform",
-   //   "count",
-   //   "page",
-   //   "per_page"
-   UserList users = strap.users(params);
-   System.out.println(users.getData());
+// You can also cast the response to a model class, if one exists.
+StrapResponse res = strap.get("users", params);
+JsonElement data = res.getAll();
 
-   UserList allUsers = strap.Users(params).getAll();
-   System.out.println(allUsers.getData());
+Gson gson = new Gson();
+gson.fromJson(data, new ArrayList<User>().getClass());
 
-    // "required":"triggerId"
-   Trigger trigger = strap.trigger(params);
-   System.out.println(trigger.getData());
+ArrayList<User> users = gson.fromJson(data, new ArrayList<User>().getClass());
+System.out.println(users);
+System.out.println(users[0].guid);
 
-    // "required":"triggerId"
-   TriggerUserList triggerUsers = strap.triggerData(params);
-   System.out.println(triggerUsers.getData());
-
-    //"required": "guid"
-    //"optional":
-    //  "date",
-    //  "count",
-    //  "start",
-    //  "end"
-   params.put("guid", "guid-goes-here");
-   ReportList activities = strap.activity(params);
-   System.out.println(activities.getData());
-
-   // "required":"id"
-   params.put("id", "ID-GOES-HERE");
-   StrapReport report = strap.report(params);
-   System.out.println(report.getData());
-
-   // "optional":
-   //  "id"
-   //  "status",
-   JobModel[] jobs = strap.jobs(params);
-   System.out.println(JSON.toJson(jobs));
-
-   JobRequestModel jobRequest = new JobRequestModel();
-   jobRequest.name = "My Job";
-
-   JobModel job = strap.createJob(jobRequest);
-   System.out.println(JSON.toJson(jobs));
-
-   // "required":"id"
-   JobModel job = strap.updateJob(params, jobRequest);
-   System.out.println(JSON.toJson(jobs));
-
-   //"required":"id"
-   strap.deleteJob(params);
-
-   //"required":"id"
-   SegmentModel jobData = strap.jobData(params);
-   System.out.println(JSON.toJson(jobData));
-
-   SegmentModel[] segments = strap.segmentation()
-
-   // "optional":
-   //  "date",
-   //  "period"
-   SegmentModel[] segments = strap.segmentation(params)
-   System.out.println(JSON.toJson(segments));
-
-   //"required": "guid"
-   // "optional": "weekday"
-   BehaviorModel[] behavior = strap.behavior(params)
-   System.out.println(JSON.toJson(behavior));
-
-   //"required": "id"
-   ReportFoodModel[] food = strap.food(params);
-   System.out.println(JSON.toJson(food));
-
-   //"required": "id"
-   ReportWorkoutModel[] workout = strap.workout(params);
-   System.out.println(JSON.toJson(workout));
-
-   //"required": "id"
-   //"optional": "type"
-   ReportDetailsModel[] details = strap.reportDetails(params);
-   System.out.println(JSON.toJson(details));
-
-   // "required": "guid"
-   // "optional": "date"
-   LinkedTreeMap<String, Object> trendingData = sdk.trend(params);
-   System.out.println(JSON.toJson(trendingData));
-
-} catch (StrapResponseParseException |
-          StrapResourceNotFoundException |
-          UnsupportedEncodingException |
-          StrapMalformedUrlException ex) {
-    Logger.getLogger(TestSDK.class.getName()).log(Level.SEVERE, null, ex);
+} catch (StrapInvalidRequestException e) {
+    e.printStackTrace();
+} catch (IOException e) {
+    e.printStackTrace();
 }
 ```

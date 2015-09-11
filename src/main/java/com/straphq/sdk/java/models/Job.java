@@ -1,10 +1,8 @@
-package com.strap.sdk.java.models;
+package com.straphq.sdk.java.models;
 
-/**
- *
- * @author Matt Johnson
- */
-public class JobModel {
+import java.util.ArrayList;
+
+public class Job extends StrapModel {
 
     public String id;
     public String name;
@@ -17,10 +15,9 @@ public class JobModel {
     public String updatedAt;
     public String[] guids;
 
-    public JobLogModel[] logs;
+    public ArrayList<JobLog> logs;
 
-
-    public class JobLogModel {
+    public class JobLog {
 
         public String status;
         public String updatedAt;

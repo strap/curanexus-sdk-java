@@ -1,9 +1,6 @@
-package com.strap.sdk.java.models;
+package com.straphq.sdk.java.models;
 
-/**
- * @author Matt Johnson
- */
-public class ReportWorkoutModel {
+public class WorkoutReport {
 
     public String id;
     public String date;
@@ -33,6 +30,5 @@ public class ReportWorkoutModel {
     public int nonactiveMinutes;
     public int movingTime;
     public int elapsedTime;
-
 
 }

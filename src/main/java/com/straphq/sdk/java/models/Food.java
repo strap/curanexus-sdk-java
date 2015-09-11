@@ -1,11 +1,6 @@
-package com.strap.sdk.java.models;
+package com.straphq.sdk.java.models;
 
-/**
- *
- * @author marcellebonterre
- */
-public class FoodModel {
-
+public class Food extends StrapModel {
     public int calories;
     public float carbs;
     public float fat;
