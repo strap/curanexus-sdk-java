@@ -5,13 +5,13 @@ Strap Server-Side SDK provides a basic, easy to use API for interacting with our
 Strap Server-Side SDK keys off of a global API discovery object using the read token for the API.
 The Strap Server-Side SDK extracts the need for developers to know, manage, and integrate the API endpoints.
 
-The a Project API discovery can be found here:
+The Project API discovery can be found here:
 
 HEADERS: "X-Auth-Token":
 GET [https://api2.straphq.com/discover]([https://api2.straphq.com/discover)
 
 ### Installation
-Download the following Jar, and include it as one of your project's libraries.
+Download the following JAR, and include it as one of your project's libraries.
 ```
 curl -O https://s3.amazonaws.com/strap-sdk/strap-sdk-java.jar
 ```
