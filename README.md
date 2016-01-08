@@ -1,39 +1,37 @@
-# Strap SDK Java
+# Java > Strap Server-Side SDK
 
-Strap SDK Java provides a basic, easy to use API for interacting with our API services.
+Strap Server-Side SDK provides a basic, easy to use API for interacting with our API services.
 
-Strap SDK Java keys off of a global API discovery object using the read token for the API. The Strap SDK Java extracts the need for developers to know, manage, and integrate the API endpoints.
+Strap Server-Side SDK keys off of a global API discovery object using the read token for the API.
+The Strap Server-Side SDK extracts the need for developers to know, manage, and integrate the API endpoints.
 
 The a Project API discovery can be found here:
 
-HEADERS: "X-Auth-Token": GET https://api2.straphq.com/discover
-
-Once the above has been fetched, StrapSDK will fetch the API discover endpoint for the project and build its API.
+HEADERS: "X-Auth-Token":
+GET [https://api2.straphq.com/discover]([https://api2.straphq.com/discover)
 
 ### Installation
 Download the following Jar, and include it as one of your project's libraries.
 ```
 curl -O https://s3.amazonaws.com/strap-sdk/strap-sdk-java.jar
 ```
-### Additionally Strap-SDK-Java depends on Google's Json library GSON. Obtain [the JAR](http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar) from Maven central.
+ Additionally Strap-SDK-Java depends on Google's Json library GSON. Obtain [the JAR](http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar) from Maven central.
 ```
 http://search.maven.org/#artifactdetails|com.google.code.gson|gson|2.3.1|jar
 ```
 
-### Usage
-```java
+### Initialization
 
+```java
 import com.straphq.sdk.java.*;
 import com.straphq.sdk.java.models.User;
 import com.google.gson.*;
 
-//
-// Project class definition goes here
-//
-// initialize Strap SDK with read token
 StrapSDK strap = new StrapSDK("Read-Token-Goes-Here");
-Gson JSON = new Gson();
+```
 
+### Basic Usage
+```java
 // fill map with url parameters and/or http request body key-value pairs
 Map<String, String> params = new HashMap<>();
 params.put("someKey", "someValue");
