@@ -23,7 +23,7 @@ import java.util.*;
 
 public class StrapSDK {
 
-    private static final String API_DISCOVERY = "https://api2.straphq.com/discover";
+    private static final String API_DISCOVERY = "https://api.curanexus.io/discover";
     private static final String API_AUTH_HEADER = "x-auth-token";
     private final String TOKEN;
     private CloseableHttpClient client;
